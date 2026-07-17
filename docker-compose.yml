@@ -1,0 +1,12 @@
+# Docker Desktop’ta proje adı: Sanas
+name: Sanas
+
+services:
+  web:
+    build: .
+    image: sanas-website:local
+    container_name: sanas-website
+    ports:
+      # Host: spesifik (çakışmasın). Container içi 8080 = Cloud Run standardı.
+      - "5703:8080"
+    restart: unless-stopped

@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.cursor
+.DS_Store
+*.log
+.env
+.env.*
+docs
+README.md
+AGENTS.md
+**/.DS_Store
