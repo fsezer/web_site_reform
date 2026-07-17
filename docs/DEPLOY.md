@@ -60,3 +60,11 @@ gcloud run deploy sanas-website \
 - DNS: Cloud Run A/AAAA + `www` → `ghs.googlehosted.com` (şimdilik DNS-only / gri bulut; sertifika bitsin)
 - Email Routing: `destek@` + `info@` → `fsezer.mail@gmail.com`
 - SSL: Full; Always HTTPS on (Cloud Run sertifikası DNS sonrası oluşur)
+
+## Durum notu (2026-07-17)
+
+**Canlı:** intro tamam — kartal flap + Est. 2004 yazı + mavi dalga çizgi; Cloud Run deploy `intro_tamam`.
+
+**Lokal:** `http://localhost:5703` (Docker). Intro tekrar: `?intro=1`.
+
+**DNS:** Cloudflare NS; apex/www → Cloud Run. Mac lokal cache eski ihs gösterebilir → flush veya 1.1.1.1.

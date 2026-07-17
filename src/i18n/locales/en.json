@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "homeTitle": "Sanas Technology",
+    "homeDescription": "Software systems for economics, intelligence, logistics and healthcare. Sanas Technology — since 2004.",
+    "projectsTitle": "Projects — Sanas Technology",
+    "projectsDescription": "Platforms in daily use at scale.",
+    "teamTitle": "Team — Sanas Technology",
+    "teamDescription": "The Sanas tree."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "capabilities": "Capabilities",
+    "team": "Team",
+    "contact": "Contact",
+    "menu": "Menu",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "main": "Main menu",
+    "lang": "Language"
+  },
+  "common": {
+    "copyright": "Copyright © www.sanastechnology.com 2004",
+    "close": "Close"
+  },
+  "home": {
+    "brand": "Sanas",
+    "lead": "Software systems — economics, intelligence, logistics, healthcare.",
+    "ctaProjects": "Projects",
+    "ctaAbout": "About",
+    "forgeTitle": "From code to consequence",
+    "forgeBody": "Lines leave the machine. A system takes form.",
+    "aiTitle": "Intelligence under discipline",
+    "aiBody": "Models become products that hold under real load.",
+    "capEyebrow": "Capabilities",
+    "capTitle": "Domains",
+    "capLink": "All capabilities",
+    "projEyebrow": "Work",
+    "projTitle": "In production",
+    "projLink": "All projects"
+  }
+}

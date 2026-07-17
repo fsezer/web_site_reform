@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "homeTitle": "Sanas Technology",
+    "homeDescription": "Softwaresysteme — Wirtschaft, Intelligenz, Logistik, Gesundheit. Seit 2004.",
+    "projectsTitle": "Projekte — Sanas Technology",
+    "projectsDescription": "Plattformen im produktiven Einsatz.",
+    "teamTitle": "Team — Sanas Technology",
+    "teamDescription": "Der Sanas-Baum."
+  },
+  "nav": {
+    "home": "Start",
+    "about": "Über uns",
+    "projects": "Projekte",
+    "capabilities": "Bereiche",
+    "team": "Team",
+    "contact": "Kontakt",
+    "menu": "Menü",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen",
+    "main": "Hauptmenü",
+    "lang": "Sprache"
+  },
+  "common": {
+    "copyright": "Copyright © www.sanastechnology.com 2004",
+    "close": "Schließen"
+  },
+  "home": {
+    "brand": "Sanas",
+    "lead": "Softwaresysteme — Wirtschaft, Intelligenz, Logistik, Gesundheit.",
+    "ctaProjects": "Projekte",
+    "ctaAbout": "Über uns",
+    "forgeTitle": "Vom Code zur Wirkung",
+    "forgeBody": "Zeilen verlassen die Maschine. Ein System entsteht.",
+    "aiTitle": "Intelligenz unter Disziplin",
+    "aiBody": "Modelle werden zu Produkten, die echte Last tragen.",
+    "capEyebrow": "Bereiche",
+    "capTitle": "Felder",
+    "capLink": "Alle Bereiche",
+    "projEyebrow": "Arbeit",
+    "projTitle": "Im Betrieb",
+    "projLink": "Alle Projekte"
+  }
+}

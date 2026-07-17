@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-http://localhost:5173
+http://localhost:5703
 
 ```bash
 npm run build    # → dist/

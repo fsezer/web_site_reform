@@ -2,139 +2,173 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (() => {
+        try {
+          const v = localStorage.getItem("sanas-lang");
+          if (v && ["en", "tr", "de", "sr"].includes(v)) document.documentElement.lang = v;
+        } catch (_) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sanas Technology</title>
-    <meta
-      name="description"
-      content="Sanas Technology kurumsal web platformu. Yazılım, iktisat, yapay zeka ve lojistik odaklı çözümler."
-    />
+    <meta name="description" content="Milyonlarca insanın kullandığı yazılım sistemleri. Sanas Technology — 2004’ten beri." />
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Sanas Technology" />
-    <meta property="og:title" content="Sanas Technology" />
-    <meta
-      property="og:description"
-      content="Sanas Technology kurumsal web platformu. Always to the future."
-    />
-    <meta property="og:image" content="/img/meta_img/sanas_meta.png" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/css/main.css" />
+    <meta property="og:title" content="Sanas Technology" />
   </head>
-  <body class="site-shell">
-    <header class="fixed inset-x-0 top-0 z-50 border-b border-paper/10 bg-ink/80 backdrop-blur-md">
+  <body class="site-shell" data-page="home">
+    <div class="site-intro" data-site-intro aria-hidden="true">
+      <div class="site-intro-haze" aria-hidden="true"></div>
+      <div class="site-intro-stage">
+        <div class="site-intro-eagle" data-intro-eagle>
+          <div class="site-intro-eagle-body">
+            <img class="eagle-flap eagle-flap-a" src="/img/brand/eagle-flight.png" alt="" width="640" height="640" />
+            <img class="eagle-flap eagle-flap-b" src="/img/brand/eagle-flight-mid.png" alt="" width="640" height="640" />
+            <img class="eagle-flap eagle-flap-c" src="/img/brand/eagle-flight-down.png" alt="" width="640" height="640" />
+          </div>
+        </div>
+        <div class="site-intro-title-wrap" data-intro-title>
+          <p class="site-intro-eyebrow" data-intro-eyebrow>Est. 2004</p>
+          <p class="site-intro-title" aria-label="Sanas Technology">
+            <span data-intro-typed></span><span class="intro-caret" data-intro-caret aria-hidden="true"></span>
+          </p>
+          <span class="site-intro-rule" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <div class="nav-backdrop" data-nav-backdrop></div>
+
+    <header class="site-header" data-site-header>
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-        <a href="/index.html" class="font-display text-lg font-semibold tracking-tight text-paper md:text-xl">
-          Sanas Technology
-        </a>
-        <button
-          type="button"
-          class="inline-flex h-10 w-10 items-center justify-center border border-paper/20 text-paper md:hidden"
-          data-nav-toggle
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="Menüyü aç"
-        >
-          <span class="sr-only">Menü</span>
-          <span class="block h-px w-5 bg-paper"></span>
-        </button>
-        <nav
-          id="site-nav"
-          data-nav-panel
-          class="flex flex-col items-center justify-center gap-8 md:flex-row md:gap-8"
-          aria-label="Ana menü"
-        >
-          <a class="nav-link is-active" href="/index.html">Home</a>
-          <a class="nav-link" href="/about.html">About</a>
-          <a class="nav-link" href="/introducing.html">Introducing</a>
-          <a class="nav-link" href="/contact.html">Contact</a>
-          <a
-            class="nav-link text-signal"
-            href="/portal.html"
-            >Sanas Web</a
-          >
-        </nav>
+        <div class="flex min-w-0 items-center gap-3 md:gap-4">
+          <a href="/index.html" class="brand-mark">Sanas</a>
+          <div class="lang-select" data-lang-switch>
+            <button type="button" class="lang-select-trigger" data-lang-trigger aria-expanded="false" aria-haspopup="listbox" aria-label="Dil">
+              <span class="lang-flag" data-lang-current-flag aria-hidden="true">🇹🇷</span>
+              <span class="lang-code" data-lang-current-code>TR</span>
+              <span class="lang-caret" aria-hidden="true"></span>
+            </button>
+            <ul class="lang-select-menu" data-lang-menu role="listbox" hidden>
+              <li role="none"><button type="button" class="lang-option" role="option" data-set-lang="en" aria-label="English"><span class="lang-flag" aria-hidden="true">🇬🇧</span><span class="lang-code">EN</span></button></li>
+              <li role="none"><button type="button" class="lang-option" role="option" data-set-lang="tr" aria-label="Türkçe"><span class="lang-flag" aria-hidden="true">🇹🇷</span><span class="lang-code">TR</span></button></li>
+              <li role="none"><button type="button" class="lang-option" role="option" data-set-lang="de" aria-label="Deutsch"><span class="lang-flag" aria-hidden="true">🇩🇪</span><span class="lang-code">DE</span></button></li>
+              <li role="none"><button type="button" class="lang-option" role="option" data-set-lang="sr" aria-label="Srpski"><span class="lang-flag" aria-hidden="true">🇷🇸</span><span class="lang-code">RS</span></button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <nav class="hidden items-center gap-7 md:flex" data-i18n-aria="nav.main" aria-label="Ana menü">
+            <a class="nav-link is-active" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
+            <a class="nav-link" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
+            <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
+            <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+            <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
+            <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
+          </nav>
+          <button type="button" class="icon-btn md:hidden" data-nav-toggle aria-expanded="false" aria-controls="site-nav" data-i18n-aria="nav.menuOpen" aria-label="Menüyü aç">
+            <span class="sr-only" data-i18n="nav.menu">Menü</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5" /></svg>
+          </button>
+        </div>
       </div>
     </header>
 
+<nav id="site-nav" class="nav-drawer" data-nav-panel data-i18n-aria="nav.main" aria-label="Ana menü">
+  <div class="nav-drawer-head">
+    <span class="text-sm font-semibold tracking-wide" data-i18n="nav.menu">Menü</span>
+    <button type="button" class="icon-btn" data-nav-close data-i18n-aria="nav.menuClose" aria-label="Menüyü kapat">
+      <span class="sr-only" data-i18n="common.close">Kapat</span>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.5" /></svg>
+    </button>
+  </div>
+  <div class="nav-drawer-links">
+        <a class="nav-link is-active" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
+        <a class="nav-link" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
+        <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
+        <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+        <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
+        <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
+  </div>
+</nav>
+
     <main>
-      <section class="relative flex min-h-dvh items-end overflow-hidden">
-        <div
-          class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(61,214,198,0.18),transparent_45%),linear-gradient(160deg,#0b0d10_0%,#14181f_48%,#0b0d10_100%)]"
-          aria-hidden="true"
-        ></div>
-        <div
-          class="absolute inset-0 opacity-[0.18]"
-          style="background-image: url('/img/bg.jpg'); background-size: cover; background-position: center"
-          aria-hidden="true"
-        ></div>
+      <section class="relative flex min-h-dvh items-end overflow-hidden bg-hero" data-home-hero>
+        <div class="absolute inset-0 opacity-35" style="background-image: url('/img/bg.jpg'); background-size: cover; background-position: center" aria-hidden="true"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,11,0.4)_0%,rgba(10,10,11,0.82)_55%,rgba(10,10,11,0.97)_100%)]" aria-hidden="true"></div>
         <div class="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-36 md:px-8 md:pb-28 md:pt-44">
-          <p class="eyebrow reveal">Sanas Technology</p>
-          <h1 class="display mt-5 max-w-4xl text-5xl leading-[0.95] md:text-7xl lg:text-8xl reveal">
-            always to<br />the future
-          </h1>
-          <p class="prose-site mt-8 max-w-xl reveal">
-            Kurumsal web platformuna hoş geldiniz. Hakkımızda, çalışma alanlarımız ve iletişim
-            kanalları bu sitede; uygulamalara Sanas Web Portal üzerinden ulaşırsınız.
+          <p class="text-[11px] font-semibold tracking-[0.28em] text-signal uppercase reveal">Est. 2004</p>
+          <p class="hero-brand mt-6 reveal" data-i18n="home.brand">Sanas</p>
+          <p class="mt-8 max-w-lg text-base leading-relaxed text-mist md:text-lg reveal" data-i18n="home.lead">
+            Yazılım sistemleri — iktisat, zekâ, lojistik, sağlık.
           </p>
-          <div class="mt-10 flex flex-wrap gap-4 reveal">
-            <a class="btn-primary" href="/about.html">About</a>
-            <a
-              class="btn-ghost"
-              href="/portal.html"
-              >Sanas Web Giriş</a
-            >
+          <div class="mt-12 flex flex-wrap gap-3 reveal">
+            <a class="btn-primary" href="/projects.html" data-i18n="home.ctaProjects">Projeler</a>
+            <a class="btn-ghost-on-dark" href="/about.html" data-i18n="home.ctaAbout">Hakkımızda</a>
           </div>
         </div>
       </section>
 
-      <section class="section-pad border-t border-paper/10">
-        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section class="section-pad">
+        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
           <div class="reveal">
-            <p class="eyebrow">Sanas Company</p>
-            <h2 class="display mt-4 text-3xl md:text-5xl">Hoş geldiniz</h2>
-            <p class="prose-site mt-6">
-              About linkinden kuruluş, vizyon, misyon ve tanıtım; Introducing linkinden sektör
-              bazında çalışma dalları; Contact linkinden iletişim kanalları yer alır.
-            </p>
-            <p class="prose-site mt-4">
-              Ürün ve uygulamalara erişim için Sanas Web Portal kapısını kullanın.
-            </p>
+            <p class="eyebrow">Forge</p>
+            <h2 class="display mt-4 text-3xl md:text-4xl" data-i18n="home.forgeTitle">Koddan sonuca</h2>
+            <p class="prose-site mt-5" data-i18n="home.forgeBody">Satırlar makineden çıkar. Sistem şekillenir. Sanas yirmi yıldır böyle çalışır.</p>
           </div>
-          <figure class="reveal">
-            <img
-              class="h-auto w-full object-cover"
-              src="/img/home_snsweb.png"
-              alt="Sanas Web Portal görseli"
-              width="960"
-              height="640"
-            />
-          </figure>
+          <div class="code-forge reveal" aria-hidden="true">
+            <div class="code-forge-line">const system = Sanas.forge({ domain: "logistics" })</div>
+            <div class="code-forge-line">system.validate().secure().deploy()</div>
+            <div class="code-forge-line">await intelligence.align(system)</div>
+            <div class="code-forge-line">return system.scale(millions)</div>
+            <div class="code-forge-line">// always to the future</div>
+            <p class="code-forge-result">Project online</p>
+          </div>
         </div>
       </section>
 
-      <section class="section-pad border-t border-paper/10 bg-ink-soft">
+      <section class="section-pad border-t border-ink/10 bg-paper-deep/50">
+        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
+          <figure class="reveal order-2 lg:order-1">
+            <img class="w-full object-cover" src="/img/int2.png" alt="Yapay zekâ ve Sanas" width="960" height="720" />
+          </figure>
+          <div class="reveal order-1 lg:order-2">
+            <p class="eyebrow">Intelligence</p>
+            <h2 class="display mt-4 text-3xl md:text-4xl" data-i18n="home.aiTitle">Zekâ, Sanas altında mükemmelleşir</h2>
+            <p class="prose-site mt-5" data-i18n="home.aiBody">Yapay zekâ burada slogan değil — gerçek yük altında duran ürünlere disiplinle işlenir.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-ink/10">
         <div class="mx-auto max-w-7xl reveal">
-          <p class="eyebrow">Sanas Web</p>
-          <h2 class="display mt-4 text-3xl md:text-5xl">Sanas Tech Portal</h2>
-          <p class="prose-site mt-6">
-            Sanas Teknoloji uygulamaları, ürünleri ve fonksiyonel sistemler için giriş kapısı.
-          </p>
-          <a
-            class="btn-primary mt-8"
-            href="/portal.html"
-            >Sanas Web {Giriş}</a
-          >
+          <p class="eyebrow" data-i18n="home.capEyebrow">Alanlar</p>
+          <h2 class="display mt-4 text-4xl md:text-5xl" data-i18n="home.capTitle">Hâkim olduğumuz zeminler</h2>
+          <a class="mt-8 inline-flex text-[13px] font-semibold tracking-[0.08em] text-signal uppercase" href="/introducing.html" data-i18n="home.capLink">Tüm alanlar</a>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-ink/10 bg-hero text-on-hero">
+        <div class="mx-auto max-w-7xl reveal">
+          <p class="text-[11px] font-semibold tracking-[0.22em] text-signal uppercase" data-i18n="home.projEyebrow">Ölçek</p>
+          <h2 class="display-on-dark mt-4 text-4xl md:text-5xl" data-i18n="home.projTitle">Milyonlarca kişi kullanıyor</h2>
+          <a class="mt-8 inline-flex text-[13px] font-semibold tracking-[0.08em] text-signal uppercase" href="/projects.html" data-i18n="home.projLink">Tüm projeler</a>
         </div>
       </section>
     </main>
 
-    <footer class="border-t border-paper/10 px-5 py-10 text-center text-sm text-fog md:px-8">
-      <p>Copyright &copy; www.sanastechnology.com 2004</p>
+    <footer class="site-footer">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <p class="font-display text-xl text-ink">Sanas</p>
+        <p data-i18n="common.copyright">Copyright &copy; www.sanastechnology.com 2004</p>
+      </div>
     </footer>
 
     <script type="module" src="/src/js/main.js"></script>

@@ -4,6 +4,16 @@ import { resolve } from "node:path";
 
 export default defineConfig({
   plugins: [tailwindcss()],
+  server: {
+    host: "localhost",
+    port: 5703,
+    strictPort: true,
+  },
+  preview: {
+    host: "localhost",
+    port: 5703,
+    strictPort: true,
+  },
   build: {
     rollupOptions: {
       input: {
@@ -11,6 +21,8 @@ export default defineConfig({
         about: resolve(__dirname, "about.html"),
         introducing: resolve(__dirname, "introducing.html"),
         contact: resolve(__dirname, "contact.html"),
+        projects: resolve(__dirname, "projects.html"),
+        team: resolve(__dirname, "team.html"),
         portal: resolve(__dirname, "portal.html"),
       },
     },

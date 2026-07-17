@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "homeTitle": "Sanas Technology",
+    "homeDescription": "Yazılım sistemleri — iktisat, zekâ, lojistik, sağlık. Sanas Technology — 2004’ten beri.",
+    "projectsTitle": "Projeler — Sanas Technology",
+    "projectsDescription": "Ölçekte çalışan platformlar.",
+    "teamTitle": "Ekip — Sanas Technology",
+    "teamDescription": "Sanas ağacı."
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımızda",
+    "projects": "Projeler",
+    "capabilities": "Alanlar",
+    "team": "Ekip",
+    "contact": "İletişim",
+    "menu": "Menü",
+    "menuOpen": "Menüyü aç",
+    "menuClose": "Menüyü kapat",
+    "main": "Ana menü",
+    "lang": "Dil"
+  },
+  "common": {
+    "copyright": "Copyright © www.sanastechnology.com 2004",
+    "close": "Kapat"
+  },
+  "home": {
+    "brand": "Sanas",
+    "lead": "Yazılım sistemleri — iktisat, zekâ, lojistik, sağlık.",
+    "ctaProjects": "Projeler",
+    "ctaAbout": "Hakkımızda",
+    "forgeTitle": "Koddan sonuca",
+    "forgeBody": "Satırlar makineden çıkar. Sistem şekillenir.",
+    "aiTitle": "Disiplin altında zekâ",
+    "aiBody": "Modeller, gerçek yük altında duran ürünlere dönüşür.",
+    "capEyebrow": "Alanlar",
+    "capTitle": "Zeminler",
+    "capLink": "Tüm alanlar",
+    "projEyebrow": "İşler",
+    "projTitle": "Canlıda",
+    "projLink": "Tüm projeler"
+  }
+}

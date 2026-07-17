@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "homeTitle": "Sanas Technology",
+    "homeDescription": "Softverski sistemi — ekonomija, inteligencija, logistika, zdravstvo. Od 2004.",
+    "projectsTitle": "Projekti — Sanas Technology",
+    "projectsDescription": "Platforme u produkciji.",
+    "teamTitle": "Tim — Sanas Technology",
+    "teamDescription": "Sanasovo stablo."
+  },
+  "nav": {
+    "home": "Početna",
+    "about": "O nama",
+    "projects": "Projekti",
+    "capabilities": "Oblasti",
+    "team": "Tim",
+    "contact": "Kontakt",
+    "menu": "Meni",
+    "menuOpen": "Otvori meni",
+    "menuClose": "Zatvori meni",
+    "main": "Glavni meni",
+    "lang": "Jezik"
+  },
+  "common": {
+    "copyright": "Copyright © www.sanastechnology.com 2004",
+    "close": "Zatvori"
+  },
+  "home": {
+    "brand": "Sanas",
+    "lead": "Softverski sistemi — ekonomija, inteligencija, logistika, zdravstvo.",
+    "ctaProjects": "Projekti",
+    "ctaAbout": "O nama",
+    "forgeTitle": "Od koda do posledice",
+    "forgeBody": "Linije napuštaju mašinu. Sistem nastaje.",
+    "aiTitle": "Inteligencija pod disciplinom",
+    "aiBody": "Modeli postaju proizvodi koji drže pod pravim opterećenjem.",
+    "capEyebrow": "Oblasti",
+    "capTitle": "Terena",
+    "capLink": "Sve oblasti",
+    "projEyebrow": "Radovi",
+    "projTitle": "U produkciji",
+    "projLink": "Svi projekti"
+  }
+}
