@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sanas Technology</title>
+    <meta
+      name="description"
+      content="Sanas Technology kurumsal web platformu. Yazılım, iktisat, yapay zeka ve lojistik odaklı çözümler."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Sanas Technology" />
+    <meta property="og:title" content="Sanas Technology" />
+    <meta
+      property="og:description"
+      content="Sanas Technology kurumsal web platformu. Always to the future."
+    />
+    <meta property="og:image" content="/img/meta_img/sanas_meta.png" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/css/main.css" />
+  </head>
+  <body class="site-shell">
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-paper/10 bg-ink/80 backdrop-blur-md">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
+        <a href="/index.html" class="font-display text-lg font-semibold tracking-tight text-paper md:text-xl">
+          Sanas Technology
+        </a>
+        <button
+          type="button"
+          class="inline-flex h-10 w-10 items-center justify-center border border-paper/20 text-paper md:hidden"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Menüyü aç"
+        >
+          <span class="sr-only">Menü</span>
+          <span class="block h-px w-5 bg-paper"></span>
+        </button>
+        <nav
+          id="site-nav"
+          data-nav-panel
+          class="flex flex-col items-center justify-center gap-8 md:flex-row md:gap-8"
+          aria-label="Ana menü"
+        >
+          <a class="nav-link is-active" href="/index.html">Home</a>
+          <a class="nav-link" href="/about.html">About</a>
+          <a class="nav-link" href="/introducing.html">Introducing</a>
+          <a class="nav-link" href="/contact.html">Contact</a>
+          <a
+            class="nav-link text-signal"
+            href="/portal.html"
+            >Sanas Web</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="relative flex min-h-dvh items-end overflow-hidden">
+        <div
+          class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(61,214,198,0.18),transparent_45%),linear-gradient(160deg,#0b0d10_0%,#14181f_48%,#0b0d10_100%)]"
+          aria-hidden="true"
+        ></div>
+        <div
+          class="absolute inset-0 opacity-[0.18]"
+          style="background-image: url('/img/bg.jpg'); background-size: cover; background-position: center"
+          aria-hidden="true"
+        ></div>
+        <div class="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-36 md:px-8 md:pb-28 md:pt-44">
+          <p class="eyebrow reveal">Sanas Technology</p>
+          <h1 class="display mt-5 max-w-4xl text-5xl leading-[0.95] md:text-7xl lg:text-8xl reveal">
+            always to<br />the future
+          </h1>
+          <p class="prose-site mt-8 max-w-xl reveal">
+            Kurumsal web platformuna hoş geldiniz. Hakkımızda, çalışma alanlarımız ve iletişim
+            kanalları bu sitede; uygulamalara Sanas Web Portal üzerinden ulaşırsınız.
+          </p>
+          <div class="mt-10 flex flex-wrap gap-4 reveal">
+            <a class="btn-primary" href="/about.html">About</a>
+            <a
+              class="btn-ghost"
+              href="/portal.html"
+              >Sanas Web Giriş</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-paper/10">
+        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div class="reveal">
+            <p class="eyebrow">Sanas Company</p>
+            <h2 class="display mt-4 text-3xl md:text-5xl">Hoş geldiniz</h2>
+            <p class="prose-site mt-6">
+              About linkinden kuruluş, vizyon, misyon ve tanıtım; Introducing linkinden sektör
+              bazında çalışma dalları; Contact linkinden iletişim kanalları yer alır.
+            </p>
+            <p class="prose-site mt-4">
+              Ürün ve uygulamalara erişim için Sanas Web Portal kapısını kullanın.
+            </p>
+          </div>
+          <figure class="reveal">
+            <img
+              class="h-auto w-full object-cover"
+              src="/img/home_snsweb.png"
+              alt="Sanas Web Portal görseli"
+              width="960"
+              height="640"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-paper/10 bg-ink-soft">
+        <div class="mx-auto max-w-7xl reveal">
+          <p class="eyebrow">Sanas Web</p>
+          <h2 class="display mt-4 text-3xl md:text-5xl">Sanas Tech Portal</h2>
+          <p class="prose-site mt-6">
+            Sanas Teknoloji uygulamaları, ürünleri ve fonksiyonel sistemler için giriş kapısı.
+          </p>
+          <a
+            class="btn-primary mt-8"
+            href="/portal.html"
+            >Sanas Web {Giriş}</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-paper/10 px-5 py-10 text-center text-sm text-fog md:px-8">
+      <p>Copyright &copy; www.sanastechnology.com 2004</p>
+    </footer>
+
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>

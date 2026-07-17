@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About — Sanas Technology</title>
+    <meta
+      name="description"
+      content="Sanas Technology hakkında: kuruluş hikayesi, vizyon ve misyon."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/css/main.css" />
+  </head>
+  <body class="site-shell">
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-paper/10 bg-ink/80 backdrop-blur-md">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
+        <a href="/index.html" class="font-display text-lg font-semibold tracking-tight text-paper md:text-xl">
+          Sanas Technology
+        </a>
+        <button
+          type="button"
+          class="inline-flex h-10 w-10 items-center justify-center border border-paper/20 text-paper md:hidden"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Menüyü aç"
+        >
+          <span class="sr-only">Menü</span>
+          <span class="block h-px w-5 bg-paper"></span>
+        </button>
+        <nav
+          id="site-nav"
+          data-nav-panel
+          class="flex flex-col items-center justify-center gap-8 md:flex-row md:gap-8"
+          aria-label="Ana menü"
+        >
+          <a class="nav-link" href="/index.html">Home</a>
+          <a class="nav-link is-active" href="/about.html">About</a>
+          <a class="nav-link" href="/introducing.html">Introducing</a>
+          <a class="nav-link" href="/contact.html">Contact</a>
+          <a
+            class="nav-link text-signal"
+            href="/portal.html"
+            >Sanas Web</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="relative min-h-[52vh] overflow-hidden pt-28">
+        <img
+          class="absolute inset-0 h-full w-full object-cover opacity-40"
+          src="/img/about0.jpg"
+          alt=""
+          aria-hidden="true"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/30"></div>
+        <div class="relative z-10 mx-auto max-w-7xl px-5 pb-16 pt-20 md:px-8">
+          <p class="eyebrow reveal">Programlama · İktisat · Yapay Zeka · Lojistik</p>
+          <h1 class="display mt-4 text-4xl md:text-6xl reveal">Sanas Technology</h1>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <article class="prose-site mx-auto reveal space-y-6">
+          <p>
+            Her şey 1998 yılında kurucumuz <em>Fatih SEZER</em>'in, Amstrad CPC 6128 marka yalnızca
+            monitör ve klavyeden oluşan bilgisayarın gömülü yazılımına <em>cat</em> komutunu yazmasıyla
+            başladı. 2001–2004 arasında donanım tamiri ve elektronik gelişim; 2004–2008 arasında
+            assembly, elektronik yazılım ve veritabanı eğitimiyle web’de toplanan özgür Sanas
+            platformunun temeli atıldı.
+          </p>
+          <p>
+            Özgür çalışan sabit ve global ekiple paketsel yazılımlar tek kaynakta toplanıp
+            geliştiriciden bağımsızlaştırıldı; sürekli destek ile programa özgü ekiplere
+            devredildi. Güvenlik ve teknolojik altyapı güçlenerek ticari sistem geliştirici yapılar
+            oluştu.
+          </p>
+          <p>
+            Çalışmaların ilerlemesiyle Sanas Technology Company adını alan firmamız; elektronik
+            yazılım, iktisat, lojistik ve sağlık ana dallarında kurumsal vizyon edindi. Misyon:
+            ticari sistemlerin geliştirilmesi, yaratılması ve kontrolü; ürün, sistem ve hizmet
+            üretmek.
+          </p>
+          <p>
+            On beş yılı aşkın global yazılım gelişimi, elektronik tasarım, iktisadi formüller,
+            lojistik koordinasyon ve sağlık alanındaki akademik bakışın entegrasyonu ile Sanas
+            Technology birlikteliği olarak değerli müşterilerimize hizmet etmekten onur duymaktayız.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="border-t border-paper/10 px-5 py-10 text-center text-sm text-fog md:px-8">
+      <p>Copyright &copy; www.sanastechnology.com 2004</p>
+    </footer>
+
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>

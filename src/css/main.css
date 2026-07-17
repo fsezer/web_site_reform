@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #0b0d10;
+  --color-ink-soft: #14181f;
+  --color-fog: #9aa3b2;
+  --color-paper: #e8ecf2;
+  --color-signal: #3dd6c6;
+  --color-signal-dim: #2aa89b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink font-body text-paper antialiased;
+  }
+
+  ::selection {
+    @apply bg-signal text-ink;
+  }
+}
+
+@layer components {
+  .site-shell {
+    @apply min-h-dvh;
+  }
+
+  .nav-link {
+    @apply text-sm font-medium tracking-[0.14em] uppercase text-fog transition-colors duration-300 hover:text-paper;
+  }
+
+  .nav-link.is-active {
+    @apply text-signal;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-signal px-6 py-3 text-sm font-semibold tracking-wide text-ink transition duration-300 hover:bg-signal-dim;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-paper/20 px-6 py-3 text-sm font-semibold tracking-wide text-paper transition duration-300 hover:border-signal hover:text-signal;
+  }
+
+  .section-pad {
+    @apply px-5 py-16 md:px-8 md:py-24 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply font-display text-xs font-semibold tracking-[0.22em] uppercase text-signal;
+  }
+
+  .display {
+    @apply font-display font-semibold tracking-tight text-paper;
+  }
+
+  .prose-site {
+    @apply max-w-3xl text-base leading-relaxed text-fog md:text-lg;
+  }
+
+  .prose-site em {
+    @apply text-paper not-italic;
+  }
+
+  .field-block {
+    @apply border-t border-paper/10 pt-6;
+  }
+
+  .reveal {
+    @apply translate-y-4 opacity-0 transition duration-700 ease-out;
+  }
+
+  .reveal.is-visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  [data-nav-panel] {
+    @apply pointer-events-none fixed inset-0 z-40 translate-x-full bg-ink/95 opacity-0 backdrop-blur-md transition duration-300 md:pointer-events-auto md:static md:translate-x-0 md:bg-transparent md:opacity-100 md:backdrop-blur-none;
+  }
+
+  [data-nav-panel].is-open {
+    @apply pointer-events-auto translate-x-0 opacity-100;
+  }
+}
