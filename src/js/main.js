@@ -49,72 +49,36 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeNav();
 });
 
-/* Eagle intro — approach + brand title */
+/* Intro — centered brand title + blue wave rule (only first entry per session) */
 if (intro && body.dataset.page === "home") {
   const force = new URLSearchParams(location.search).has("intro");
   const seen = sessionStorage.getItem("sanas-intro");
   if (seen && !force) {
     intro.remove();
   } else {
-    const eagle = intro.querySelector("[data-intro-eagle]");
-    const bodyEl = eagle?.querySelector(".site-intro-eagle-body");
-    const frames = eagle ? [...eagle.querySelectorAll(".eagle-flap")] : [];
     const titleWrap = intro.querySelector("[data-intro-title]");
     const typedEl = intro.querySelector("[data-intro-typed]");
     const caretEl = intro.querySelector("[data-intro-caret]");
     const eyebrowEl = intro.querySelector("[data-intro-eyebrow]");
     const fullTitle = "Sanas Technology";
-    const FLAP_MS = 320;
     const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
-
-    const showFrame = (index) => {
-      frames.forEach((frame, i) => frame.classList.toggle("is-on", i === index));
-      if (bodyEl) {
-        const lift = index === 0 ? 2 : index === 1 ? 8 : 22;
-        bodyEl.style.transform = `translateY(${lift}px)`;
-      }
-    };
-
-    const grow = (level) => {
-      eagle?.style.setProperty("--eagle-scale", String(0.42 + level * 0.11));
-      eagle?.style.setProperty("--eagle-z", `${-520 + level * 90}px`);
-    };
 
     setLocked(true);
 
     (async () => {
-      const typePromise = (async () => {
-        if (!typedEl) return;
-        titleWrap?.classList.add("is-revealing");
-        eyebrowEl?.classList.add("is-on");
-        await wait(220);
-        const charMs = 125;
-        for (let i = 1; i <= fullTitle.length; i += 1) {
-          typedEl.textContent = fullTitle.slice(0, i);
-          await wait(charMs);
-        }
-        caretEl?.classList.add("is-done");
-        titleWrap?.classList.add("is-settled");
-        titleWrap?.classList.remove("is-revealing");
-      })();
+      titleWrap?.classList.add("is-revealing");
+      eyebrowEl?.classList.add("is-on");
+      await wait(500);
 
-      grow(0);
-      showFrame(2);
-
-      // 3 sets: kapalı → orta, then open
-      const flapSeq = [2, 1, 2, 1, 2, 1];
-      for (let i = 0; i < flapSeq.length; i += 1) {
-        grow(i + 1);
-        showFrame(flapSeq[i]);
-        await wait(FLAP_MS);
+      const charMs = 125;
+      for (let i = 1; i <= fullTitle.length; i += 1) {
+        typedEl.textContent = fullTitle.slice(0, i);
+        await wait(charMs);
       }
+      caretEl?.classList.add("is-done");
+      titleWrap?.classList.add("is-settled");
+      titleWrap?.classList.remove("is-revealing");
 
-      grow(7);
-      showFrame(0);
-      eagle?.classList.add("is-wings-open", "is-arrived");
-      if (bodyEl) bodyEl.style.transform = "translateY(2px)";
-
-      await typePromise;
       await wait(1400);
 
       intro.classList.add("is-done");
@@ -157,6 +121,180 @@ if (reveals.length && "IntersectionObserver" in window) {
   reveals.forEach((el) => observer.observe(el));
 } else {
   reveals.forEach((el) => el.classList.add("is-visible"));
+}
+
+/* Language change greeting — transparent circular popup in screen center */
+const GREETINGS = {
+  tr: { text: "Merhaba", flag: "🇹🇷" },
+  en: { text: "Hello", flag: "🇬🇧" },
+  de: { text: "Hallo", flag: "🇩🇪" },
+  sr: { text: "Zdravo", flag: "🇷🇸" },
+};
+
+document.addEventListener("sanas:locale", (event) => {
+  const greet = GREETINGS[event.detail?.locale];
+  if (!greet) return;
+
+  document.querySelector(".lang-greet")?.remove();
+
+  const overlay = document.createElement("div");
+  overlay.className = "lang-greet";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.innerHTML = `
+    <div class="lang-greet-circle">
+      <span class="lang-greet-flag">${greet.flag}</span>
+      <span class="lang-greet-text">${greet.text}</span>
+    </div>`;
+  document.body.appendChild(overlay);
+  window.setTimeout(() => overlay.remove(), 2450);
+});
+
+/* Home: hero auto-rotating quote slides + logo icon hue */
+const heroSlidesWrap = document.querySelector("[data-hero-slides]");
+if (heroSlidesWrap) {
+  const slides = Array.from(heroSlidesWrap.querySelectorAll(".hero-slide"));
+  const heroLogo = document.querySelector("[data-hero-logo]");
+  let slideIdx = 0;
+  const nextSlide = () => {
+    slides[slideIdx].classList.remove("is-active");
+    slideIdx = (slideIdx + 1) % slides.length;
+    slides[slideIdx].classList.add("is-active");
+    heroLogo?.style.setProperty("--hue", `${slides[slideIdx].dataset.hue || 0}deg`);
+    window.setTimeout(nextSlide, slideIdx === 0 ? 5000 : 4000);
+  };
+  window.setTimeout(nextSlide, 5000);
+}
+
+/* Home: live code typer (loops, scrolls down) */
+const codeTyper = document.querySelector("[data-code-typer]");
+if (codeTyper) {
+  const LINES = [
+    'const sanas = new Forge({ est: 2004 });',
+    'sanas.stack(["python", "java", "c++", "js"]);',
+    "const build = await sanas.compile(idea);",
+    'build.test({ coverage: "full" });',
+    'build.review().sign("sanas-core");',
+    "deploy(build).to(cloud.grid());",
+    "monitor(build).alert(on.call);",
+    'scale(build, { users: "millions" });',
+    "// 20 years. still shipping.",
+  ];
+  const MAX_LINES = 12;
+  const caret = document.createElement("span");
+  caret.className = "code-typer-caret";
+
+  let lineIdx = 0;
+  let charIdx = 0;
+  let lineEl = null;
+  let typerRunning = false;
+  let typerTimer = null;
+
+  const newLine = () => {
+    lineEl = document.createElement("span");
+    lineEl.className = "code-typer-line";
+    codeTyper.appendChild(lineEl);
+    lineEl.appendChild(caret);
+    while (codeTyper.children.length > MAX_LINES) {
+      codeTyper.removeChild(codeTyper.firstChild);
+    }
+  };
+
+  const tick = () => {
+    if (!typerRunning) return;
+    if (!lineEl) newLine();
+    const text = LINES[lineIdx % LINES.length];
+    charIdx += 1;
+    lineEl.textContent = text.slice(0, charIdx);
+    lineEl.appendChild(caret);
+    if (charIdx >= text.length) {
+      charIdx = 0;
+      lineIdx += 1;
+      lineEl = null;
+      typerTimer = window.setTimeout(tick, 620);
+    } else {
+      typerTimer = window.setTimeout(tick, 34 + Math.random() * 40);
+    }
+  };
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !typerRunning) {
+            typerRunning = true;
+            tick();
+          } else if (!entry.isIntersecting && typerRunning) {
+            typerRunning = false;
+            window.clearTimeout(typerTimer);
+          }
+        });
+      },
+      { threshold: 0 },
+    );
+    io.observe(codeTyper);
+  } else {
+    typerRunning = true;
+    tick();
+  }
+}
+
+/* Home: weave animation — glyphs fly from keyboard up into the screen */
+const weave = document.querySelector("[data-weave]");
+if (weave && "IntersectionObserver" in window) {
+  const GLYPHS = "01{}();=</>#&$fnif".split("");
+  const COLORS = ["#7dd3fc", "#38bdf8", "#fb923c", "#fbbf24", "#a5b4fc", "#86efac"];
+  let running = false;
+  let timer = null;
+
+  const spawn = () => {
+    if (!running) return;
+    const rect = weave.getBoundingClientRect();
+    if (rect.width > 0) {
+      const el = document.createElement("span");
+      el.className = "weave-glyph";
+      el.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      const startX = rect.width * (0.3 + Math.random() * 0.4);
+      const startY = rect.height * (0.72 + Math.random() * 0.1);
+      const endY = rect.height * (0.16 + Math.random() * 0.14);
+      const driftX = (Math.random() - 0.5) * rect.width * 0.28;
+      const size = 9 + Math.random() * 8;
+      el.style.left = `${startX}px`;
+      el.style.top = "0px";
+      el.style.fontSize = `${size}px`;
+      el.style.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      el.style.textShadow = `0 0 8px ${el.style.color}`;
+      weave.appendChild(el);
+
+      const dur = 2200 + Math.random() * 1800;
+      const anim = el.animate(
+        [
+          { transform: `translate(0px, ${startY}px) scale(1)`, opacity: 0 },
+          { transform: `translate(${driftX * 0.3}px, ${startY - (startY - endY) * 0.25}px) scale(1.05)`, opacity: 1, offset: 0.22 },
+          { transform: `translate(${driftX}px, ${endY + (startY - endY) * 0.25}px) scale(0.9)`, opacity: 0.9, offset: 0.75 },
+          { transform: `translate(${driftX * 1.15}px, ${endY}px) scale(0.55)`, opacity: 0 },
+        ],
+        { duration: dur, easing: "cubic-bezier(0.3, 0, 0.4, 1)" },
+      );
+      anim.onfinish = () => el.remove();
+    }
+    timer = window.setTimeout(spawn, 140 + Math.random() * 200);
+  };
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          spawn();
+        } else if (!entry.isIntersecting && running) {
+          running = false;
+          window.clearTimeout(timer);
+        }
+      });
+    },
+    { threshold: 0.2 },
+  );
+  io.observe(weave);
 }
 
 /* Project cards: count-up, users, forge typewriter */

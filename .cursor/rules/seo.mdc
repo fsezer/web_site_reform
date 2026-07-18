@@ -1,0 +1,13 @@
+---
+description: SEO, favicon ve sosyal paylaşım (OG) kuralları
+alwaysApply: true
+---
+
+# SEO & Meta
+
+- **Domain:** `https://www.sanastechnology.com`
+- **Favicon seti:** `public/favicon/` (favicon-16/32, apple-touch-icon 180, android-chrome 192/512, site.webmanifest) + kökte `public/favicon.ico`. Kaynak: `public/img/brand/logo-mark.png` (sadece sekizgen ikon, SANAS yazısı olmadan). Logo değişirse seti yeniden üret.
+- **OG / paylaşım görseli:** `public/img/meta_img/sanas_meta.png` (1200×630, koyu zemin + logo-full). WhatsApp vb. paylaşımlarda: başlık = sayfa `<title>`, açıklama = slogan (`Kodun büyüsüyle, sonsuz çözümlere.`), url = canonical.
+- **Her sayfanın `<head>`inde olacaklar:** benzersiz `<title>` (`Sayfa — Sanas Technology`), `meta description`, `link canonical`, favicon seti linkleri, `theme-color #0a0a0b`, og:type/site_name/title/description/url/image (+width/height), `twitter:card summary_large_image`.
+- Yeni sayfa eklerken bu blokları kopyala, canonical/og:url'i sayfaya göre değiştir.
+- Başlık ve açıklamalar i18n `meta.*` anahtarlarıyla dile göre değişir (`src/js/i18n.js` yönetir); statik HTML'e TR varsayılanını yaz.

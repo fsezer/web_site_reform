@@ -80,7 +80,7 @@ function syncLangSelect(lang) {
     trigger.setAttribute("aria-label", `${t(lang, "nav.lang")}: ${pack.label}`);
   }
 
-  root.querySelectorAll("[data-set-lang]").forEach((btn) => {
+  document.querySelectorAll("[data-set-lang]").forEach((btn) => {
     const active = btn.getAttribute("data-set-lang") === lang;
     btn.classList.toggle("is-active", active);
     btn.setAttribute("aria-selected", String(active));
@@ -180,7 +180,7 @@ export function initI18n() {
     toggleLangSelect();
   });
 
-  root?.querySelectorAll("[data-set-lang]").forEach((btn) => {
+  document.querySelectorAll("[data-set-lang]").forEach((btn) => {
     btn.addEventListener("click", (event) => {
       event.stopPropagation();
       const next = btn.getAttribute("data-set-lang");

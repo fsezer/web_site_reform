@@ -1,0 +1,15 @@
+---
+description: Sanas brand voice — slogan and founder quote
+alwaysApply: true
+---
+
+# Brand
+
+- **Slogan (resmi):** `Kodun büyüsüyle, sonsuz çözümlere.`
+  - EN: With the magic of code, to endless solutions.
+  - DE: Mit der Magie des Codes zu endlosen Lösungen.
+  - SR: Magijom koda, ka beskrajnim rešenjima.
+  - i18n key: `home.slogan` — footer ve marka metinlerinde bunu kullan.
+
+- **Kurucu sözü (Fatih Sezer · CTO):** “Karanlığın içinde yol bulmak için ışığa ihtiyacın yok. Haritayı sen çizdiysen, gölgede kalmak en büyük avantajdır.”
+  - i18n key: `home.quote` — hero alıntısı; slogan ile karıştırma. Tırnaklarla metin arasında boşluk bırakılır, imza sağa hizalı `Fatih SEZER · CTO`.

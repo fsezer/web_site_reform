@@ -1,0 +1,11 @@
+---
+description: Local preview via Docker only on port 5703
+alwaysApply: true
+---
+
+# Local preview workflow
+
+- Develop in source, then **`docker compose up -d --build`**.
+- User always checks **`http://localhost:5703`** (intro: `http://localhost:5703/?intro=1`).
+- Do **not** run Vite for the user, do **not** stop Docker to free the port, do **not** change ports.
+- Do **not** auto-open Chrome/`open http://...` — only paste the URL in chat.
