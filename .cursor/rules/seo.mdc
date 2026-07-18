@@ -11,3 +11,14 @@ alwaysApply: true
 - **Her sayfanın `<head>`inde olacaklar:** benzersiz `<title>` (`Sayfa — Sanas Technology`), `meta description`, `link canonical`, favicon seti linkleri, `theme-color #0a0a0b`, og:type/site_name/title/description/url/image (+width/height), `twitter:card summary_large_image`.
 - Yeni sayfa eklerken bu blokları kopyala, canonical/og:url'i sayfaya göre değiştir.
 - Başlık ve açıklamalar i18n `meta.*` anahtarlarıyla dile göre değişir (`src/js/i18n.js` yönetir); statik HTML'e TR varsayılanını yaz.
+
+# Arama görünürlüğü hedefi
+
+- Ana hedef: Sanas Technology'yi Eskişehir merkezli, global ölçekli ve büyük sistemler geliştirebilen köklü teknoloji firması olarak konumlandırmak.
+- Yerel hedef sorgular: `Eskişehir yazılım firması`, `Eskişehir yapay zeka`, `Eskişehir mobil uygulama`, `Eskişehir özel yazılım`, `Eskişehir bulut çözümleri`, `Eskişehir kurumsal yazılım`.
+- Global hedefler: enterprise software, AI, cloud, fintech, logistics, healthcare, mechatronics ve bespoke software.
+- Rakip adı üzerinden içerik veya yanıltıcı karşılaştırma yapma. “En iyi”, “en eski”, “lider” gibi doğrulanamayan iddialar yazma; 1998 kökeni, 2004 kuruluşu, gerçek projeler, teknoloji yığını ve ölçek kanıtlarını kullan.
+- Meta etiketleri tek başına sıralama sağlamaz. Teknik SEO yanında Google Business Profile, Search Console, Bing Webmaster, Yandex Webmaster, GA4/GTM, kuruluş şeması, referanslar, üçüncü taraf atıflar ve düzenli özgün içerik gerekir.
+- SEO sayfaları birbirinin kopyası veya doorway page olmayacak. Her URL özgün arama niyeti, gerçek hizmet içeriği, vaka/proje kanıtı, FAQ ve ilgili İstiklal Yazılım bağlantısı taşıyacak.
+- AI aramalarında görünürlük için net entity bilgisi, `Organization`/`LocalBusiness`/`Service`/`FAQPage` şemaları, tutarlı NAP bilgisi ve kaynak gösterilebilir açıklamalar kullan.
+- Seyrek güncellenen kurumsal site için sitemap `lastmod` gerçek değişikliklerde güncellenir; sahte `changefreq`/tarih sinyali kullanılmaz.

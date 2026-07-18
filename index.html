@@ -38,7 +38,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/css/main.css" />
@@ -89,14 +89,14 @@
     <header class="site-header" data-site-header>
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <div class="flex min-w-0 items-center gap-3 md:gap-4">
-          <a href="/index.html" class="brand-mark"><img class="brand-logo" src="/img/brand/logo-mark.png" alt="" width="265" height="265" /><span class="brand-text">SANAS</span></a>
+          <a href="/index.html" class="brand-mark" aria-label="Sanas Technology"><img class="brand-logo-full brand-logo-on-light" src="/img/brand/logo-full-dark.png" alt="Sanas" width="822" height="264" /><img class="brand-logo-full brand-logo-on-dark" src="/img/brand/logo-full.png" alt="Sanas" width="822" height="264" /></a>
         </div>
         <div class="flex items-center gap-3">
           <nav class="hidden items-center gap-7 md:flex" data-i18n-aria="nav.main" aria-label="Ana menü">
             <a class="nav-link is-active" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
             <a class="nav-link" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
             <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
-            <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+            <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Çözüm</a>
             <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
             <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
           </nav>
@@ -133,7 +133,7 @@
         <a class="nav-link is-active" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
         <a class="nav-link" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
         <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
-        <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+        <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Çözüm</a>
         <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
         <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
   </div>
@@ -330,6 +330,42 @@
               <p class="dom-desc" data-i18n="home.dom6d">Ölçeklenen altyapı — dağıtım, izleme ve yüksek erişilebilirlik bulutta.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="section-card sect-seam sect-partners text-on-hero" style="--s1: #a855f7; --s2: #ec4899">
+        <div class="mx-auto max-w-6xl reveal">
+          <div class="card-head">
+            <span class="card-head-ico" style="--i1: #a855f7; --i2: #ec4899" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11h4.5l2-5.5 2.5 11L15 11H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4" cy="11" r="1.6" fill="currentColor" opacity="0.55"/><circle cx="18" cy="11" r="1.6" fill="currentColor" opacity="0.55"/></svg></span>
+            <h2 class="card-title" data-i18n="home.partnersTitle">Partner &amp; Platformlar</h2>
+          </div>
+          <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist" data-i18n="home.partnersLead">Bulut, kimlik ve mağaza ekosistemlerinde kullandığımız resmi platformlar.</p>
+          <ul class="partner-grid mt-10" aria-label="Partnerler">
+            <li class="partner-badge" style="--bc: #00a4ef">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/microsoft.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">Microsoft</span>
+            </li>
+            <li class="partner-badge" style="--bc: #ff9900">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/aws.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">AWS</span>
+            </li>
+            <li class="partner-badge" style="--bc: #0078d4">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/azure.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">Azure</span>
+            </li>
+            <li class="partner-badge" style="--bc: #4285f4">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/google.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">Google</span>
+            </li>
+            <li class="partner-badge" style="--bc: #34a853">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/googleplay.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">Play Store</span>
+            </li>
+            <li class="partner-badge" style="--bc: #0d96f6">
+              <span class="partner-badge-ico" aria-hidden="true"><img src="/img/partners/appstore.svg" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+              <span class="partner-badge-name">App Store</span>
+            </li>
+          </ul>
         </div>
       </section>
 

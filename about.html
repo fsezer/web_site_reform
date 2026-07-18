@@ -11,8 +11,9 @@
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>About — Sanas Technology</title>
-    <meta name="description" content="Fatih SEZER ve Sanas Technology kuruluş hikâyesi." />
+    <title>Hakkımızda — Sanas Technology</title>
+    <meta name="description" content="1998’den 2004’e Sanas Technology kuruluş hikâyesi. Yazılım, iktisat, lojistik, sağlık ve mekatronik." />
+    <meta name="author" content="Sanas Technology" />
     <meta name="robots" content="index, follow" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
@@ -23,7 +24,7 @@
     <link rel="canonical" href="https://www.sanastechnology.com/about.html" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sanas Technology" />
-    <meta property="og:title" content="About — Sanas Technology" />
+    <meta property="og:title" content="Hakkımızda — Sanas Technology" />
     <meta property="og:description" content="Kodun büyüsüyle, sonsuz çözümlere. — www.sanastechnology.com" />
     <meta property="og:url" content="https://www.sanastechnology.com/about.html" />
     <meta property="og:image" content="https://www.sanastechnology.com/img/meta_img/sanas_meta.png" />
@@ -31,7 +32,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="About — Sanas Technology" />
+    <meta name="twitter:title" content="Hakkımızda — Sanas Technology" />
     <meta name="twitter:description" content="Kodun büyüsüyle, sonsuz çözümlere." />
     <meta name="twitter:image" content="https://www.sanastechnology.com/img/meta_img/sanas_meta.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,20 +43,32 @@
     />
     <link rel="stylesheet" href="/src/css/main.css" />
   </head>
-  <body class="site-shell">
+  <body class="site-shell" data-page="about">
+    <div class="site-intro" data-site-intro aria-hidden="true">
+      <div class="site-intro-haze" aria-hidden="true"></div>
+      <div class="site-intro-stage">
+        <div class="site-intro-title-wrap" data-intro-title>
+          <p class="site-intro-title" aria-label="Sanas Technology">
+            <span data-intro-typed></span><span class="intro-caret" data-intro-caret aria-hidden="true"></span>
+          </p>
+          <span class="site-intro-rule" aria-hidden="true"></span>
+          <p class="site-intro-eyebrow" data-intro-eyebrow>Est. 2004</p>
+        </div>
+      </div>
+    </div>
     <div class="nav-backdrop" data-nav-backdrop></div>
 
     <header class="site-header" data-site-header>
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <div class="flex min-w-0 items-center gap-3 md:gap-4">
-          <a href="/index.html" class="brand-mark"><img class="brand-logo" src="/img/brand/logo-mark.png" alt="" width="265" height="265" /><span class="brand-text">SANAS</span></a>
+          <a href="/index.html" class="brand-mark" aria-label="Sanas Technology"><img class="brand-logo-full brand-logo-on-light" src="/img/brand/logo-full-dark.png" alt="Sanas" width="822" height="264" /><img class="brand-logo-full brand-logo-on-dark" src="/img/brand/logo-full.png" alt="Sanas" width="822" height="264" /></a>
         </div>
         <div class="flex items-center gap-3">
           <nav class="hidden items-center gap-7 md:flex" data-i18n-aria="nav.main" aria-label="Ana menü">
             <a class="nav-link" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
             <a class="nav-link is-active" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
             <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
-            <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+            <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Çözüm</a>
             <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
             <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
           </nav>
@@ -92,7 +105,7 @@
         <a class="nav-link" href="/index.html" data-i18n="nav.home">Ana Sayfa</a>
         <a class="nav-link is-active" href="/about.html" data-i18n="nav.about">Hakkımızda</a>
         <a class="nav-link" href="/projects.html" data-i18n="nav.projects">Projeler</a>
-        <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Alanlar</a>
+        <a class="nav-link" href="/introducing.html" data-i18n="nav.capabilities">Çözüm</a>
         <a class="nav-link" href="/team.html" data-i18n="nav.team">Ekip</a>
         <a class="nav-link" href="/contact.html" data-i18n="nav.contact">İletişim</a>
   </div>
@@ -106,46 +119,55 @@
 
     <main>
       <section class="page-hero">
+        <div class="page-hero-bg" aria-hidden="true"></div>
+        <div class="page-hero-shade" aria-hidden="true"></div>
         <div class="page-hero-inner">
-          <p class="eyebrow reveal">Founder</p>
-          <h1 class="display-on-dark mt-4 text-4xl md:text-6xl reveal">Fatih SEZER</h1>
-          <p class="mt-5 max-w-xl text-mist reveal">Sanas Technology kurucusu — 1998’den bu yana sistem kuran mühendis.</p>
+          <div class="page-head reveal">
+            <span class="page-head-ico" style="--i1: #f59e0b; --i2: #f43f5e" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v6m0 0c-3 0-5 2-5 5v7h10v-7c0-3-2-5-5-5Zm-8 9 3-2m13 2-3-2M8 21v-3m8 3v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div>
+              <h1 class="display-on-dark" data-i18n="nav.about">Hakkımızda</h1>
+              <p class="page-sub" data-i18n="pages.aboutSub">1998'de Atılan İlk Temelden, Yarının Dijital Dünyasını İnşa Eden Ekibe</p>
+            </div>
+          </div>
         </div>
       </section>
-
-      <section class="section-pad">
-        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <figure class="reveal">
-            <img class="w-full object-cover" src="/img/portal/profile.png" alt="Fatih SEZER" width="800" height="1000" />
-          </figure>
-          <article class="prose-site reveal space-y-6">
-            <p>
-              Her şey 1998’de <em>Fatih SEZER</em>’in Amstrad CPC 6128 üzerinde gömülü yazılıma
-              <em>cat</em> yazmasıyla başladı. Donanım, elektronik ve assembly yılları; 2004’te Sanas
-              platformunun web’de toplanmasıyla kurumsal çizgiye dönüştü.
-            </p>
-            <p>
-              Vizyonu tek bir ürün değil: ticari sistemlerin geliştirilmesi, yaratılması ve kontrolü.
-              Yazılım, iktisat, lojistik ve sağlık aynı mühendislik disiplininde birleşir.
-            </p>
-            <p>
-              On sekiz yılı aşkın geliştirme deneyimi; güvenlikten sağlığa uzanan ortak projeler.
-              Üç ilke: iki adım sonrası için kurmak; üç adım öncesini sisteme entegre etmek;
-              kalıplaşmış yaklaşımdan uzak, sürekli gelişen ekranlar.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-pad border-t border-ink/10 bg-paper-deep/40">
-        <div class="mx-auto max-w-7xl reveal">
-          <p class="eyebrow">Archive</p>
-          <h2 class="display mt-4 text-3xl md:text-4xl">2000’ler — dört noktadan bir sistem</h2>
-          <p class="prose-site mt-5">Dünyanın farklı yerlerinden bir araya gelen çekirdek. Yer tutucu arşiv görseli; orijinal kare yakında.</p>
-          <figure class="mt-10">
-            <img class="w-full max-w-4xl object-cover" src="/img/portal/about-2.jpg" alt="2000’ler ekip arşivi — yer tutucu" width="1200" height="800" />
-            <figcaption class="mt-3 text-sm text-fog">Arşiv yer tutucu — gerçek 2000’ler karesi eklenecek.</figcaption>
-          </figure>
+      <section class="inner-dark">
+        <div class="mx-auto max-w-5xl">
+          <div>
+            <div class="remote-net mt-0 mb-12 reveal" aria-hidden="true">
+              <span class="rlink" style="left: 14%; top: 30%; width: 34%; transform: rotate(9deg)"></span>
+              <span class="rlink" style="left: 52%; top: 38%; width: 30%; transform: rotate(-14deg); --lc: #f43f5e"></span>
+              <span class="rlink" style="left: 30%; top: 62%; width: 38%; transform: rotate(-28deg)"></span>
+              <span class="rnode" style="left: 4%; top: 16%">🖥️<span class="rnode-label">CPC.ftm</span></span>
+              <span class="rnode" style="left: 46%; top: 58%">💻<span class="rnode-label">Pc.gt</span></span>
+              <span class="rnode" style="right: 4%; top: 8%">🗄️<span class="rnode-label">Server.dc</span></span>
+            </div>
+            <p class="mb-10 text-center text-[11px] font-semibold tracking-[0.2em] text-fog uppercase reveal" data-i18n="about.netCaption">Bütünsel akıl · Klavye tek — iletişimle büyüyen yapı</p>
+            <article class="prose-site max-w-none space-y-5 reveal">
+              <p data-i18n="about.p1" data-i18n-html>Her şey <span class="about-hl" style="--hl: #22d3ee">1998</span>’de, <span class="about-hl" style="--hl: #fff">Fatih SEZER</span>’in <span class="about-hl" style="--hl: #a78bfa">Amstrad CPC 6128</span>’in içindeki gömülü yazılıma ilk komutu — <span class="about-hl" style="--hl: #86efac">cat</span> — yazmasıyla başladı. Bir monitör, bir klavye ve sınır tanımayan bir merak.</p>
+              <p data-i18n="about.p2" data-i18n-html>2001–2004 arası donanımın kalbinde geçti: anakartlar, güç kaynakları, <span class="about-hl" style="--hl: #f59e0b">elektronik tamirat</span>. Ardından <span class="about-hl" style="--hl: #86efac">assembly</span>, elektronik yazılım ve <span class="about-hl" style="--hl: #38bdf8">veritabanı</span> programlama yılları… <span class="about-hl" style="--hl: #22d3ee">2004</span>’te bu birikim, webde toplanan özgür <span class="about-hl" style="--hl: #fff">Sanas</span> platformuna dönüştü.</p>
+              <p data-i18n="about.p3" data-i18n-html>Dünyanın farklı noktalarındaki özgür ekip, yazılımları tek kaynakta topladı; çift devirli geliştirme ve üst düzey güvenlikle <span class="about-hl" style="--hl: #f43f5e">ticari sistem geliştirici</span> yapılar kuruldu. Firmamız <span class="about-hl" style="--hl: #fff">Sanas Technology</span> adını aldı; <span class="about-hl" style="--hl: #34d399">mekatronik</span>, <span class="about-hl" style="--hl: #38bdf8">iktisat</span>, <span class="about-hl" style="--hl: #f5a623">lojistik</span> ve <span class="about-hl" style="--hl: #f43f5e">sağlık</span> ana dallarında kurumsal vizyonunu netleştirdi.</p>
+              <p data-i18n="about.p4" data-i18n-html>Bugün <span class="about-hl" style="--hl: #22d3ee">20 yılı aşkın</span> global yazılım geliştirme, elektronik tasarım, yüksek marjinal faydalı iktisadi modeller ve ileri lojistik koordinasyon tek çatıda: değerli müşterilerimize hizmet etmekten <span class="about-hl" style="--hl: #fff">onur ve gurur</span> duyuyoruz.</p>
+            </article>
+            <div class="mx-auto mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 reveal">
+              <figure>
+                <img class="about-duo" src="/img/about/amstrad.webp" alt="Amstrad CPC 6128" width="760" height="507" loading="lazy" decoding="async" style="object-fit: contain; background: #0d1016" />
+                <figcaption class="mt-2 text-center text-[10px] font-semibold tracking-[0.2em] text-fog uppercase">Amstrad CPC 6128 · 1998</figcaption>
+              </figure>
+              <figure>
+                <img class="about-duo" src="/img/about/firstlogo.webp" alt="İlk Sanas logosu" width="480" height="600" loading="lazy" decoding="async" />
+                <figcaption class="mt-2 text-center text-[10px] font-semibold tracking-[0.2em] text-fog uppercase" data-i18n="about.logoCaption">İlk Logomuz · 2004</figcaption>
+              </figure>
+              <figure>
+                <img class="about-duo" src="/img/about/solder.webp" alt="Elektronik atölye" width="760" height="507" loading="lazy" decoding="async" />
+                <figcaption class="mt-2 text-center text-[10px] font-semibold tracking-[0.2em] text-fog uppercase" data-i18n="about.solderCaption">Devre Çalışması</figcaption>
+              </figure>
+              <figure>
+                <img class="about-duo" src="/img/about/fatih.webp" alt="Fatih SEZER" width="366" height="640" loading="lazy" decoding="async" />
+                <figcaption class="mt-2 text-center text-[10px] font-semibold tracking-[0.2em] text-signal uppercase">Fatih SEZER · Kurucu · CTO</figcaption>
+              </figure>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -153,13 +175,13 @@
     <footer class="site-footer-dark">
       <div class="mx-auto flex max-w-7xl flex-col items-stretch gap-8 md:flex-row md:items-center md:justify-between">
         <div class="text-center md:text-left">
-          <img class="footer-logo mx-auto md:mx-0" src="/img/brand/logo-full.png" alt="Sanas Technology" width="850" height="315" />
-          <p class="mt-4 text-sm text-mist" data-i18n="home.slogan">Kodun büyüsüyle sonsuz çözümlere.</p>
+          <img class="footer-logo mx-auto md:mx-0" src="/img/brand/logo-full.png" alt="Sanas Technology" width="850" height="315" loading="lazy" decoding="async" />
+          <p class="mt-4 text-sm text-mist" data-i18n="home.slogan">Kodun büyüsüyle, sonsuz çözümlere.</p>
           <hr class="footer-hr mx-auto md:mx-0" />
           <p class="mt-2 text-xs text-fog" data-i18n="common.copyright">&copy; 2004 Sanas Technology</p>
         </div>
         <a class="footer-contact" href="/contact.html">
-          <img class="footer-contact-logo" src="/img/brand/logo-mark.png" alt="" width="265" height="265" />
+          <img class="footer-contact-logo" src="/img/brand/logo-mark.png" alt="" width="265" height="265" loading="lazy" decoding="async" />
           <span class="footer-contact-text">
             <span class="footer-contact-kicker">Sanas Technology</span>
             <span class="footer-contact-main">

@@ -49,8 +49,8 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeNav();
 });
 
-/* Intro — centered brand title + blue wave rule (only first entry per session) */
-if (intro && body.dataset.page === "home") {
+/* Intro — centered brand title + blue wave rule (first entry per session, any page) */
+if (intro) {
   const force = new URLSearchParams(location.search).has("intro");
   const seen = sessionStorage.getItem("sanas-intro");
   if (seen && !force) {
