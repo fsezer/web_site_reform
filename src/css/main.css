@@ -2675,6 +2675,12 @@ body.is-admin-modal {
   line-height: 1.7;
   color: rgba(232, 232, 234, 0.88);
 }
+.content-article h2 {
+  margin: 1.25rem 0 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(245, 245, 247, 0.95);
+}
 .content-related {
   max-width: 42rem;
   margin: 2.5rem auto 0;
