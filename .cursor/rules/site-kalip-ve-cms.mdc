@@ -1,0 +1,32 @@
+---
+description: Site kalıbı, CMS ve öz açıklama stili
+alwaysApply: true
+---
+
+# Site kalıbı & CMS
+
+## Cevap stili
+- Açıklayıcı, sade, öz yaz. Jargon varsa önce günlük dilde söyle.
+- Uzun mimari dersi verme; 1–2 cümle özet + gerekirse kısa adımlar.
+
+## CMS nedir?
+CMS = içeriği (yazı, foto, menü) kod yazmadan düzenleme paneli.  
+Site iskeleti (kalıp) aynı kalır; panelden sadece metin/görsel değişir.
+
+## Kalıp nedir?
+Hazır, mobil uyumlu site iskeleti: sayfa düzeni, menü, stiller, bileşenler.  
+Örnek: Sanas’tan çıkan “düz kurumsal / apart” kalıbı.
+
+## İçerik nedir?
+Markaya özel her şey: logo, renk, slogan, odalar, galeri, iletişim, SEO metinleri.
+
+## Kullanım akışı
+1. Kalıbı bir kez kur ve kaydet (kod + boş içerik şeması).
+2. Yeni iş (ör. Medcezir): kalıbı kopyalama / aynı temayı kullan.
+3. Sadece içeriği doldur (config veya CMS paneli).
+4. Domain bağla, yayınla.
+
+## Kural
+- Yeni müşteri sitesi = kalıp + içerik. Her seferinde sıfırdan site yazma.
+- Kalıp kodunu müşteriye özel bozma; fark içerikte veya ince tema ayarında kalsın.
+- Fork/kopya proje yalnızca gerçekten ayrı ürün gerektiğinde.
