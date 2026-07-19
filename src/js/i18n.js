@@ -143,6 +143,20 @@ export function applyTranslations(locale) {
     el.setAttribute("alt", t(lang, key));
   });
 
+  document.querySelectorAll("[data-i18n-href]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-href");
+    if (!key) return;
+    const value = t(lang, key);
+    if (value && value !== key) el.setAttribute("href", value.startsWith("mailto:") ? value : `mailto:${value}`);
+  });
+
+  document.querySelectorAll("[data-i18n-email]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-email");
+    if (!key) return;
+    const value = t(lang, key);
+    if (value && value !== key) el.textContent = value;
+  });
+
   const page = document.body?.dataset?.page;
   if (page) {
     const title = t(lang, `meta.${page}Title`);
@@ -150,6 +164,26 @@ export function applyTranslations(locale) {
     const desc = t(lang, `meta.${page}Description`);
     const meta = document.querySelector('meta[name="description"]');
     if (meta && desc && desc !== `meta.${page}Description`) meta.setAttribute("content", desc);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && title && title !== `meta.${page}Title`) ogTitle.setAttribute("content", title);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) {
+      const slogan = t(lang, "home.slogan");
+      if (slogan) ogDesc.setAttribute("content", slogan);
+    }
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle && title && title !== `meta.${page}Title`) twTitle.setAttribute("content", title);
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) {
+      const slogan = t(lang, "home.slogan");
+      if (slogan) twDesc.setAttribute("content", slogan);
+    }
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    if (ogLocale) {
+      const localeMap = { tr: "tr_TR", en: "en_US", de: "de_DE", sr: "sr_RS" };
+      ogLocale.setAttribute("content", localeMap[lang] || "tr_TR");
+    }
   }
 
   syncLangSelect(lang);

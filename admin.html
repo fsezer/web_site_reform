@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — Sanas Technology</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/main.css" />
+    <script>
+      (() => {
+        try {
+          const t = localStorage.getItem("sanas-admin-theme") || "dark";
+          const sys = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.dataset.theme = t === "system" ? sys : t;
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body class="admin-shell" data-page="admin" data-require-auth>
+    <div class="site-intro" data-site-intro aria-hidden="true">
+      <div class="site-intro-haze" aria-hidden="true"></div>
+      <div class="site-intro-stage">
+        <div class="site-intro-title-wrap" data-intro-title>
+          <p class="site-intro-title" aria-label="Sanas Technology">
+            <span data-intro-typed></span><span class="intro-caret" data-intro-caret aria-hidden="true"></span>
+          </p>
+          <span class="site-intro-rule" aria-hidden="true"></span>
+          <p class="site-intro-eyebrow" data-intro-eyebrow>Est. 2004</p>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="admin-menu-btn" data-admin-menu aria-label="Menü">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="admin-side-backdrop" data-admin-backdrop></div>
+
+    <aside class="admin-side" data-admin-side>
+      <div class="admin-side-head">
+        <a class="admin-brand" href="/index.html" aria-label="Sanas Technology">
+          <img src="/img/brand/logo-full.png" alt="Sanas" width="822" height="264" />
+        </a>
+        <button type="button" class="admin-icon-btn admin-side-collapse" data-admin-collapse title="Menüyü gizle/göster" aria-label="Menüyü gizle/göster">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3.5 5.5 8 10 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <nav class="admin-nav">
+        <button type="button" class="is-active" data-admin-tab="dashboard">
+          <span class="admin-nav-ico" style="--ic:#38bdf8"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1.5" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="8" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="4.5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg></span>
+          <span class="admin-nav-label">Dashboard</span>
+        </button>
+        <button type="button" data-admin-tab="analiz">
+          <span class="admin-nav-ico" style="--ic:#a78bfa"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11V7.5M5.5 11V3.5M9 11V6M12 11V2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <span class="admin-nav-label">Analiz</span>
+        </button>
+        <button type="button" data-admin-tab="seo">
+          <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9.2 9.2 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          <span class="admin-nav-label">SEO</span>
+        </button>
+        <button type="button" data-admin-tab="notes">
+          <span class="admin-nav-ico" style="--ic:#fbbf24"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5h8v9H5.2L3 9.3V2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 5h4M5 7.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          <span class="admin-nav-label">Notlar</span>
+        </button>
+        <button type="button" data-admin-tab="settings">
+          <span class="admin-nav-ico" style="--ic:#f472b6"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M7 1.6v1.2M7 11.2v1.2M1.6 7h1.2M11.2 7h1.2M3.1 3.1l.85.85M10.05 10.05l.85.85M10.9 3.1l-.85.85M3.95 10.05l-.85.85" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          <span class="admin-nav-label">Ayarlar</span>
+        </button>
+      </nav>
+      <div class="admin-side-foot">
+        <span class="admin-user" data-admin-user></span>
+        <div class="admin-side-actions">
+          <button type="button" class="admin-icon-btn" data-domain-info title="Domain" aria-label="Domain bilgisi">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.4"/><path d="M8 7v4.2M8 5.1v.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="admin-logout" data-logout>Çıkış</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-panel is-active" data-panel="dashboard">
+        <div class="admin-seg" data-dash-seg>
+          <button type="button" class="is-active" data-seg="fixed">Sabit sayfalar</button>
+          <button type="button" data-seg="seo">SEO sayfaları</button>
+        </div>
+        <div class="admin-kpi" data-dash-kpi></div>
+        <div class="admin-card">
+          <div class="admin-card-bar">
+            <h2 data-dash-title>Trend</h2>
+            <div class="admin-inline-filters">
+              <select data-dash-range>
+                <option value="yesterday">Dün</option>
+                <option value="week">Haftalık</option>
+                <option value="month">Aylık</option>
+              </select>
+              <select data-dash-chart-type>
+                <option value="area">Alan</option>
+                <option value="line">Çizgi</option>
+                <option value="bar">Çubuk</option>
+                <option value="hbar">Yatay çubuk</option>
+                <option value="pie">Pasta</option>
+                <option value="donut">Halka</option>
+              </select>
+              <button type="button" class="admin-icon-btn" data-dash-refresh title="Yenile" aria-label="Grafiği yenile">↻</button>
+            </div>
+          </div>
+          <div class="admin-chart-box" data-dash-chart></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-bar"><h2>Sayfalar</h2></div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Δ</th></tr></thead>
+              <tbody data-dash-pages></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-card" data-dash-tips>
+          <div class="admin-card-bar"><h2>Öneriler</h2></div>
+          <ul class="admin-tip-list" data-dash-tip-list></ul>
+        </div>
+        <div class="admin-two-col">
+          <div class="admin-card">
+            <div class="admin-card-bar"><h2>Yerel fırsatlar</h2></div>
+            <ul class="admin-opp-list" data-local-opps></ul>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-bar"><h2>Sağlık</h2></div>
+            <ul class="admin-health-list" data-health-list></ul>
+          </div>
+        </div>
+        <button type="button" class="admin-domain-summary admin-card" data-domain-info>
+          <span>Domain süresi</span>
+          <strong data-domain-summary-days>—</strong>
+          <em>sanastechnology.com</em>
+        </button>
+      </section>
+
+      <section class="admin-panel" data-panel="analiz">
+        <div class="admin-seg" data-analiz-seg>
+          <button type="button" class="is-active" data-seg="fixed">Sabit sayfalar</button>
+          <button type="button" data-seg="seo">SEO sayfaları</button>
+        </div>
+        <form class="admin-toolbar" data-analiz-form>
+          <label class="admin-field"><span>Başlangıç</span><input type="date" name="from" data-analiz-from /></label>
+          <label class="admin-field"><span>Bitiş</span><input type="date" name="to" data-analiz-to /></label>
+          <label class="admin-field"><span>Aralık</span>
+            <select name="preset" data-analiz-preset>
+              <option value="yesterday">Dün</option>
+              <option value="week">1 hafta</option>
+              <option value="month">1 ay</option>
+              <option value="custom">İki tarih arası</option>
+            </select>
+          </label>
+          <label class="admin-field"><span>Grafik</span>
+            <select name="chart" data-analiz-chart-type>
+              <option value="bar">Çubuk</option>
+              <option value="line">Çizgi</option>
+              <option value="area">Alan</option>
+              <option value="hbar">Yatay çubuk</option>
+              <option value="pie">Pasta</option>
+              <option value="donut">Halka</option>
+            </select>
+          </label>
+          <button type="submit" class="admin-btn admin-btn-primary">Uygula</button>
+          <button type="button" class="admin-btn" data-analiz-refresh>↻</button>
+          <button type="button" class="admin-btn" data-analiz-csv>CSV</button>
+          <button type="button" class="admin-btn" data-analiz-xlsx>Excel</button>
+        </form>
+        <div class="admin-card">
+          <div class="admin-chart-box admin-chart-box-lg" data-analiz-chart></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Oran</th></tr></thead>
+              <tbody data-analiz-pages></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-panel" data-panel="seo">
+        <div class="admin-toolbar">
+          <label class="admin-field admin-field-grow"><span>Ara</span><input type="search" data-seo-search placeholder="Başlık veya içerik…" /></label>
+          <button type="button" class="admin-btn admin-btn-primary" data-seo-new>Yeni</button>
+        </div>
+        <div class="admin-card">
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th><button type="button" class="admin-th" data-seo-sort="slug">Slug</button></th>
+                  <th><button type="button" class="admin-th" data-seo-sort="title">Başlık</button></th>
+                  <th><button type="button" class="admin-th" data-seo-sort="views">Görüntülenme</button></th>
+                  <th><button type="button" class="admin-th" data-seo-sort="score">Skor</button></th>
+                  <th><button type="button" class="admin-th" data-seo-sort="updated">Güncelleme</button></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody data-seo-tbody></tbody>
+            </table>
+          </div>
+          <div class="admin-pager" data-seo-pager></div>
+        </div>
+      </section>
+
+      <section class="admin-panel" data-panel="notes">
+        <div class="admin-toolbar">
+          <label class="admin-field admin-field-grow"><span>Ara</span><input type="search" data-notes-search placeholder="Notlarda ara…" /></label>
+          <button type="button" class="admin-btn admin-btn-primary" data-notes-new>Yeni</button>
+        </div>
+        <div class="admin-notes-grid" data-notes-grid></div>
+        <div class="admin-pager" data-notes-pager></div>
+      </section>
+
+      <section class="admin-panel" data-panel="settings">
+        <div class="admin-settings-grid">
+          <div class="admin-card">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#f472b6"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.2" stroke="currentColor" stroke-width="1.3"/></svg></span>
+              Tema
+            </h2>
+            <div class="admin-theme-row" data-theme-pick>
+              <button type="button" data-theme="dark">Koyu</button>
+              <button type="button" data-theme="light">Açık</button>
+              <button type="button" data-theme="system">Sistem</button>
+            </div>
+          </div>
+          <div class="admin-card">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#38bdf8"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.2a2.4 2.4 0 0 1 2.4 2.4v1.1h.9A1.5 1.5 0 0 1 11.8 7.2v3.1A1.5 1.5 0 0 1 10.3 11.8H3.7A1.5 1.5 0 0 1 2.2 10.3V7.2A1.5 1.5 0 0 1 3.7 5.7h.9V4.6A2.4 2.4 0 0 1 7 2.2Z" stroke="currentColor" stroke-width="1.2"/></svg></span>
+              Oturum
+            </h2>
+            <label class="admin-field" style="margin-top:.75rem"><span>Otomatik çıkış</span>
+              <select data-session-timeout>
+                <option value="30">30 dakika</option>
+                <option value="60">1 saat</option>
+                <option value="240">4 saat</option>
+                <option value="0">Kapalı</option>
+              </select>
+            </label>
+            <p class="admin-hint">2FA (Google doğrulama kodu) Firebase aşamasında açılacak.</p>
+          </div>
+          <div class="admin-card">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7.5M4.2 6.8 7 9.6l2.8-2.8M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Yedek
+            </h2>
+            <div class="admin-stack">
+              <button type="button" class="admin-btn" data-backup-export>SEO + Notlar indir (JSON)</button>
+            </div>
+          </div>
+          <div class="admin-card admin-card-wide">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#a78bfa"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.3" stroke="currentColor" stroke-width="1.2"/><path d="M2.8 11.5c.7-2 2.2-3 4.2-3s3.5 1 4.2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              Google yetkililer
+            </h2>
+            <form class="admin-allow-form" data-allow-form>
+              <input class="admin-input" type="email" name="email" placeholder="ornek@gmail.com" required aria-label="Yetkili e-posta" />
+              <button type="submit" class="admin-btn admin-btn-primary">Ekle</button>
+            </form>
+            <p class="admin-hint" data-allow-msg hidden></p>
+            <ul class="admin-allow-list" data-allow-list></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="admin-modal" data-seo-modal hidden>
+      <div class="admin-modal-backdrop" data-seo-modal-close></div>
+      <div class="admin-modal-card" role="dialog" aria-modal="true" aria-labelledby="seo-modal-title">
+        <header class="admin-modal-head">
+          <h2 id="seo-modal-title">SEO sayfası</h2>
+          <button type="button" class="admin-icon-btn" data-seo-modal-close aria-label="Kapat">✕</button>
+        </header>
+        <form class="admin-stack" data-seo-form>
+          <input type="hidden" name="id" />
+          <label class="admin-field"><span>Başlık</span><input name="title" required /></label>
+          <label class="admin-field"><span>Slug</span><input name="slug" required pattern="[a-z0-9\-]+" /></label>
+          <label class="admin-field"><span>Alt başlık</span><input name="subtitle" /></label>
+          <label class="admin-field"><span>İçerik</span><textarea name="body" rows="8" required></textarea></label>
+          <div class="admin-score-card" data-seo-score-card>
+            <span>SEO skor</span>
+            <strong data-seo-score>0</strong>
+            <em data-seo-score-hint>—</em>
+          </div>
+          <div class="admin-meta-head">
+            <span>SEO meta alanları</span>
+            <div class="admin-meta-actions">
+              <button type="button" class="admin-btn admin-btn-sm" data-seo-istiklal>+ İstiklal link</button>
+              <button type="button" class="admin-btn admin-btn-sm" data-seo-auto>↻ Otomatik oluştur</button>
+            </div>
+          </div>
+          <label class="admin-field"><span>Meta title</span><input name="metaTitle" maxlength="60" /></label>
+          <label class="admin-field"><span>Meta description</span><textarea name="metaDesc" rows="2" maxlength="160"></textarea></label>
+          <label class="admin-field"><span>Keywords</span><input name="keywords" /></label>
+          <label class="admin-field"><span>İlgili linkler</span><textarea name="related" rows="2" placeholder="Her satır: Başlık | https://..."></textarea></label>
+          <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-primary">Kaydet</button>
+            <button type="button" class="admin-btn" data-seo-modal-close>Vazgeç</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="admin-modal" data-notes-modal hidden>
+      <div class="admin-modal-backdrop" data-notes-modal-close></div>
+      <div class="admin-modal-card" role="dialog" aria-modal="true">
+        <header class="admin-modal-head">
+          <h2>Not</h2>
+          <button type="button" class="admin-icon-btn" data-notes-modal-close aria-label="Kapat">✕</button>
+        </header>
+        <form class="admin-stack" data-notes-form>
+          <input type="hidden" name="id" />
+          <label class="admin-field"><span>Başlık</span><input name="title" required /></label>
+          <label class="admin-field"><span>Not</span><textarea name="body" rows="6" required></textarea></label>
+          <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-primary">Kaydet</button>
+            <button type="button" class="admin-btn" data-notes-modal-close>Vazgeç</button>
+            <button type="button" class="admin-btn admin-btn-danger" data-notes-delete hidden>Sil</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="admin-modal" data-domain-modal hidden>
+      <div class="admin-modal-backdrop" data-domain-modal-close></div>
+      <div class="admin-modal-card admin-modal-sm" role="dialog" aria-modal="true">
+        <header class="admin-modal-head">
+          <h2>Domain</h2>
+          <button type="button" class="admin-icon-btn" data-domain-modal-close aria-label="Kapat">✕</button>
+        </header>
+        <div class="admin-stack">
+          <p class="admin-domain-name">sanastechnology.com</p>
+          <label class="admin-field"><span>Bitiş tarihi</span><input type="date" data-domain-date /></label>
+          <p class="admin-domain-days" data-domain-days></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/admin.js"></script>
+  </body>
+</html>

@@ -71,7 +71,11 @@
     "quote3": "Sınırların Ötesine Geçmek İçin",
     "sloganHero": "Kodun Büyüsüyle, Sonsuz Çözümlere",
     "partnersTitle": "Partner & Platformlar",
-    "partnersLead": "Bulut, kimlik ve mağaza ekosistemlerinde kullandığımız resmi platformlar."
+    "partnersLead": "Bulut, kimlik ve mağaza ekosistemlerinde kullandığımız resmi platformlar.",
+    "srHeadline": "Sanas Technology — Kodun büyüsüyle, sonsuz çözümlere. 2004'ten beri yazılım, bulut ve yapay zekâ çözümleri.",
+    "partnersAria": "Partnerler",
+    "pipeAria": "Yazılım süreci",
+    "aiImgAlt": "Klavyeden yapay zekâ örgüsüyle koda"
   },
   "about": {
     "p1": "Her şey <span class=\"about-hl\" style=\"--hl: #22d3ee\">1998</span>’de, <span class=\"about-hl\" style=\"--hl: #fff\">Fatih SEZER</span>’in <span class=\"about-hl\" style=\"--hl: #a78bfa\">Amstrad CPC 6128</span>’in içindeki gömülü yazılıma ilk komutu — <span class=\"about-hl\" style=\"--hl: #86efac\">cat</span> — yazmasıyla başladı. Bir monitör, bir klavye ve sınır tanımayan bir merak.",
@@ -80,7 +84,11 @@
     "p4": "Bugün <span class=\"about-hl\" style=\"--hl: #22d3ee\">20 yılı aşkın</span> global yazılım geliştirme, elektronik tasarım, yüksek marjinal faydalı iktisadi modeller ve ileri lojistik koordinasyon tek çatıda: değerli müşterilerimize hizmet etmekten <span class=\"about-hl\" style=\"--hl: #fff\">onur ve gurur</span> duyuyoruz.",
     "netCaption": "Bütünsel akıl · Klavye tek — iletişimle büyüyen yapı",
     "logoCaption": "İlk Logomuz · 2004",
-    "solderCaption": "Devre Çalışması"
+    "solderCaption": "Devre Çalışması",
+    "amstradCaption": "Amstrad CPC 6128 · 1998",
+    "logoAlt": "İlk Sanas logosu",
+    "solderAlt": "Elektronik atölye",
+    "founderCaption": "Fatih SEZER · Kurucu · CTO"
   },
   "projects": {
     "techLabel": "Teknoloji",
@@ -190,7 +198,21 @@
     "p1": "Sanas ağacı tek kökten büyür: yazılım, iktisat, zekâ, lojistik ve sağlık aynı mühendislik disiplininde birleşir. Dünyanın farklı noktalarından gelen çekirdek ekip, ürünleri tek kaynakta toplar ve canlıda taşır.",
     "p2": "Kurumsal veya kişisel yazılım desteği için bize <a class=\"text-signal underline-offset-2 hover:underline\" href=\"https://istiklalyazilim.com\" target=\"_blank\" rel=\"noopener noreferrer\">İstiklal Yazılım</a> üzerinden de ulaşabilirsiniz.",
     "quote": "Biz bu yola konforlu ofislerde, yan yana masalarda değil; <strong>kilometrelerce uzaktan, tek bir hedefe kilitlenerek</strong> çıktık. Mesafeler bizi ayırmadı; aksine, iki gözle baktık ekranlara, <strong>tek bir klavyeden tek bir elle yazıyormuş gibi</strong> kenetlendik. Teknolojinin getirdiği en sert krizlerle uzaktan uzağa çarpışarak, zorluklarla büyüdük. Biz çalıştıkça Sanas büyüdü; Sanas büyüdükçe aramızdaki o <strong>sarsılmaz kardeşlik bağı</strong> daha da köklendi. Ekranların arkasında mesafeleri yok eden <strong>tek bir akıl ve mertçe bir duruş</strong> var. Bugün en karmaşık mimarileri ve en ağır yükü taşıyan sistemleri kusursuzca ayağa kaldırıyorsak, arkasında <strong>birbirine gözü kapalı güvenen adamların iradesi</strong> var. Çünkü en büyük çözümler, mesafeleri değil, <strong>sınırları aşanların</strong> elinden çıkar.",
-    "partnerEyebrow": "Bir Sanas Technology Kuruluşu"
+    "partnerEyebrow": "Bir Sanas Technology Kuruluşu",
+    "founderRole": "Kurucu · CTO",
+    "advisorsAria": "Danışmanlar",
+    "roleLawyer": "Avukat",
+    "roleFieldOps": "Saha Operasyon & Finans",
+    "roleAnalyst": "Analist",
+    "roleProgrammer": "Programcı",
+    "roleFullStack": "Full Stack Geliştirici",
+    "roleDesigner": "Grafik Tasarımcı",
+    "roleBackend": "BackEnd Geliştirici",
+    "roleMechatronics": "Mekatronik",
+    "roleElectronics": "Elektronik",
+    "roleIllustrator": "İllüstratör",
+    "roleMusician": "Müzisyen",
+    "roleMobile": "Mobil Geliştiriciler"
   },
   "contact": {
     "emailLabel": "E-posta",
@@ -198,7 +220,8 @@
     "phoneLabel": "Telefon",
     "partnerEyebrow": "Türkiye Alt Kuruluşu",
     "partnerBody": "Bir Sanas Technology kuruluşu. Mobil, yapay zekâ ve özel yazılım çözümleri için buradan da ulaşabilirsiniz.",
-    "partnerAddress": "Büyükdere Mah. Kaplanlı Cad. No:10A, Odunpazarı / Eskişehir"
+    "partnerAddress": "Büyükdere Mah. Kaplanlı Cad. No:10A, Odunpazarı / Eskişehir",
+    "supportEmail": "destek@sanastechnology.com"
   },
   "pages": {
     "aboutSub": "1998'de Atılan İlk Temelden, Yarının Dijital Dünyasını İnşa Eden Ekibe",

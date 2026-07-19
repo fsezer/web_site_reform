@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /login.html
+Disallow: /Admin
+Disallow: /admin
+Disallow: /admin.html
 
 Sitemap: https://www.sanastechnology.com/sitemap.xml

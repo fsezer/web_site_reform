@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function email() {
+      return request.auth.token.email;
+    }
+
+    function isLockedAdmin() {
+      return email() == 'admin@istiklalyazilim.com';
+    }
+
+    function isListedAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/settings/admins)
+        && email() in get(/databases/$(database)/documents/settings/admins).data.emails;
+    }
+
+    function canManageAdmins() {
+      return isLockedAdmin()
+        || email() == 'fsezer.mail@gmail.com'
+        || isListedAdmin();
+    }
+
+    match /settings/admins {
+      allow read: if signedIn();
+      allow write: if canManageAdmins()
+        && request.resource.data.locked == 'admin@istiklalyazilim.com'
+        && 'admin@istiklalyazilim.com' in request.resource.data.emails;
+    }
+  }
+}

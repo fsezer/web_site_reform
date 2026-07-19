@@ -1,6 +1,8 @@
 import { initI18n } from "./i18n.js";
+import { initAnalytics } from "./analytics.js";
 
 initI18n();
+initAnalytics();
 
 const body = document.body;
 const navToggle = document.querySelector("[data-nav-toggle]");
