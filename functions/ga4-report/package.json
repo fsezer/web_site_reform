@@ -1,0 +1,11 @@
+{
+  "name": "sanas-ga4-report",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "engines": { "node": "22" },
+  "dependencies": {
+    "@google-analytics/data": "^5.1.0",
+    "firebase-admin": "^13.4.0"
+  }
+}

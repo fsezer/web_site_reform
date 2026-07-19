@@ -1,4 +1,4 @@
-import { bustAllowlistCache, logout, requireAuth } from "./auth.js";
+import { auth, bustAllowlistCache, logout, requireAuth } from "./auth.js";
 import {
   ensureAllowlistRemote,
   fetchAllowlist,
@@ -19,6 +19,7 @@ import {
   unpublishSeoPage,
 } from "./cms.js";
 import { fetchPublicSettings, savePublicSettings } from "./siteSettings.js";
+import { GA4_REPORT_URL } from "./firebase.js";
 
 const KEYS = {
   theme: "sanas-admin-theme",
@@ -969,6 +970,41 @@ if (!user) {
 
   document.querySelector("[data-analiz-refresh]")?.addEventListener("click", () => void renderAnaliz());
   chartSel?.addEventListener("change", () => void renderAnaliz());
+
+  document.querySelector("[data-ga4-fetch]")?.addEventListener("click", async () => {
+    const status = document.querySelector("[data-ga4-status]");
+    const tbody = document.querySelector("[data-ga4-paths]");
+    const days = document.querySelector("[data-ga4-days]")?.value || "7";
+    if (status) status.textContent = "GA4 çekiliyor…";
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("Oturum yok");
+      const token = await user.getIdToken();
+      const res = await fetch(`${GA4_REPORT_URL}?days=${encodeURIComponent(days)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      if (status) {
+        status.textContent = `GA4 · ${data.from} → ${data.to} · ${data.rowCount} satır`;
+      }
+      if (tbody) {
+        tbody.innerHTML = data.byPath?.length
+          ? data.byPath.map((r) => `<tr><td><code>${r.path}</code></td><td>${r.views}</td></tr>`).join("")
+          : `<tr><td colspan="2" class="admin-empty">GA4’te satır yok (yeni property / gecikme olabilir)</td></tr>`;
+      }
+      if (data.byDate?.length) {
+        renderChart(document.querySelector("[data-analiz-chart]"), data.byDate, chartSel?.value || "bar");
+      }
+    } catch (err) {
+      if (status) {
+        status.textContent = err?.message || "GA4 çekilemedi";
+        status.classList.add("is-error");
+      }
+    }
+  });
 
   void renderAnaliz();
 

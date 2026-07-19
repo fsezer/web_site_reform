@@ -198,14 +198,29 @@
             </div>
           </div>
         </div>
-        <div class="admin-card">
-          <div class="admin-card-bar"><h2>Google ölçüm</h2></div>
-          <div class="admin-stack admin-measure-row">
-            <a class="admin-btn admin-btn-primary" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener">GA4 aç (G-HY4FN9MXS9)</a>
-            <a class="admin-btn" href="https://search.google.com/search-console?resource_id=sc-domain%3Asanastechnology.com" target="_blank" rel="noopener">Search Console</a>
-            <p class="admin-hint">Admin grafikleri site hit’lerinden gelir. Arama sorgusu / sıra için Search Console; detaylı kitle için GA4. Data API köprüsü sonraki mikro adım.</p>
+          <div class="admin-card">
+            <div class="admin-card-bar"><h2>Google ölçüm</h2></div>
+            <div class="admin-stack admin-measure-row">
+              <div class="admin-inline-filters">
+                <select data-ga4-days>
+                  <option value="7">7 gün</option>
+                  <option value="14">14 gün</option>
+                  <option value="28">28 gün</option>
+                </select>
+                <button type="button" class="admin-btn admin-btn-primary" data-ga4-fetch>GA4’ten çek</button>
+              </div>
+              <p class="admin-hint" data-ga4-status>Data API hazır olunca buradan gelir.</p>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead><tr><th>GA4 path</th><th>Görüntülenme</th></tr></thead>
+                  <tbody data-ga4-paths><tr><td colspan="2" class="admin-empty">Henüz çekilmedi</td></tr></tbody>
+                </table>
+              </div>
+              <a class="admin-btn" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener">GA4 konsol</a>
+              <a class="admin-btn" href="https://search.google.com/search-console?resource_id=sc-domain%3Asanastechnology.com" target="_blank" rel="noopener">Search Console</a>
+              <p class="admin-hint">İlk kurulum: GA4 → Property access → <code>ga4-reader@sanas-502703.iam.gserviceaccount.com</code> → Viewer.</p>
+            </div>
           </div>
-        </div>
       </section>
 
       <section class="admin-panel" data-panel="seo">
