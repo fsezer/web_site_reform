@@ -17,9 +17,11 @@ Adım 1 (admin + Firestore CMS) bitti. Adım 2 hedefi: **yerel görünürlük + 
 
 ## Sonraki (adım 2 devam)
 
-- GA4 Data API / sorgu paneli
-- FAQPage şeması yayınlanan içerikte
-- Business Profile API başvurusu (opsiyonel, onay bekler)
-- PWA admin → Android
+- [x] FAQPage + Article şeması yayınlanan içerikte  
+- [x] `##` başlık render  
+- [x] 2 örnek yerel landing (yazılım + yapay zeka) sitemap’te  
+- [ ] GA4 Data API / sorgu paneli  
+- [ ] Business Profile API başvurusu (opsiyonel)  
+- [ ] PWA admin → Android  
 
 AI SEO: henüz yok; sen yazarsın.
