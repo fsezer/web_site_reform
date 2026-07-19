@@ -18,6 +18,7 @@ import {
   saveSeoPage,
   unpublishSeoPage,
 } from "./cms.js";
+import { fetchPublicSettings, savePublicSettings } from "./siteSettings.js";
 
 const KEYS = {
   theme: "sanas-admin-theme",
@@ -41,13 +42,61 @@ const FIXED_PAGES = [
 const PAGE_SIZE = 8;
 
 const LOCAL_OPPS = [
-  { q: "Eskişehir yazılım firması", tip: "Kurumsal sayfa + vaka" },
-  { q: "Eskişehir yapay zeka", tip: "Çözüm + Dr.Mind köprüsü" },
-  { q: "Eskişehir mobil uygulama", tip: "Projeler + İstiklal linki" },
-  { q: "Eskişehir özel yazılım", tip: "Hizmet SEO landing" },
-  { q: "Eskişehir bulut çözümleri", tip: "Cloud kartı içeriği" },
-  { q: "Eskişehir kurumsal yazılım", tip: "Hakkımızda kanıtları" },
+  {
+    q: "Eskişehir yazılım firması",
+    tip: "Kurumsal sayfa + vaka",
+    slug: "eskisehir-yazilim-firmasi",
+    title: "Eskişehir Yazılım Firması — Sanas Technology",
+  },
+  {
+    q: "Eskişehir yapay zeka",
+    tip: "Çözüm + Dr.Mind köprüsü",
+    slug: "eskisehir-yapay-zeka",
+    title: "Eskişehir Yapay Zeka Çözümleri",
+  },
+  {
+    q: "Eskişehir mobil uygulama",
+    tip: "Projeler + İstiklal linki",
+    slug: "eskisehir-mobil-uygulama",
+    title: "Eskişehir Mobil Uygulama Geliştirme",
+  },
+  {
+    q: "Eskişehir özel yazılım",
+    tip: "Hizmet SEO landing",
+    slug: "eskisehir-ozel-yazilim",
+    title: "Eskişehir Özel Yazılım Geliştirme",
+  },
+  {
+    q: "Eskişehir bulut çözümleri",
+    tip: "Cloud kartı içeriği",
+    slug: "eskisehir-bulut-cozumleri",
+    title: "Eskişehir Bulut Çözümleri",
+  },
+  {
+    q: "Eskişehir kurumsal yazılım",
+    tip: "Hakkımızda kanıtları",
+    slug: "eskisehir-kurumsal-yazilim",
+    title: "Eskişehir Kurumsal Yazılım",
+  },
 ];
+
+function draftBodyFromOpp(opp) {
+  return [
+    `${opp.q} arayanlar için net bir bakış: Sanas Technology, 2004’ten beri ölçeklenebilir yazılım sistemleri geliştirir.`,
+    "",
+    "## Ne sunuyoruz",
+    "Kurumsal yazılım, bulut, yapay zekâ ve mobil çözümlerde uçtan uca tasarım ve teslimat.",
+    "",
+    "## Sanas yaklaşımı",
+    "Abartısız iddia yerine gerçek projeler, ölçülebilir sonuç ve uzun vadeli bakım.",
+    "",
+    "## Sık sorulanlar",
+    "Süreç nasıl işler? Keşif → mimari → geliştirme → yayın → destek.",
+    "",
+    "Türkiye operasyonları için: https://istiklalyazilim.com",
+    "Çözümlerimiz: https://www.sanastechnology.com/introducing.html",
+  ].join("\n");
+}
 
 const CHART_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fbbf24", "#f472b6", "#22d3ee", "#fb7185"];
 
@@ -539,6 +588,63 @@ if (!user) {
     downloadBlob(`sitemap-${today}.xml`, xml, "application/xml");
   });
 
+  const scInput = document.querySelector("[data-sc-verification]");
+  const scMsg = document.querySelector("[data-sc-msg]");
+  void fetchPublicSettings().then((s) => {
+    if (scInput && s.googleSiteVerification) scInput.value = s.googleSiteVerification;
+  });
+  document.querySelector("[data-sc-save]")?.addEventListener("click", async () => {
+    const code = String(scInput?.value || "").trim();
+    try {
+      await savePublicSettings({ googleSiteVerification: code });
+      if (scMsg) {
+        scMsg.hidden = false;
+        scMsg.textContent = code ? "Kaydedildi — tüm sayfalara meta eklenecek." : "Kod temizlendi.";
+        scMsg.classList.remove("is-error");
+      }
+    } catch (err) {
+      if (scMsg) {
+        scMsg.hidden = false;
+        scMsg.textContent = err?.message || "Kaydedilemedi";
+        scMsg.classList.add("is-error");
+      }
+    }
+  });
+
+  document.querySelector("[data-local-opps]")?.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-opp-draft]");
+    if (!btn) return;
+    const opp = LOCAL_OPPS[Number(btn.getAttribute("data-opp-draft"))];
+    if (!opp) return;
+    if (seoCache.some((p) => p.slug === opp.slug)) {
+      alert("Bu slug zaten var. SEO sekmesinden düzenle.");
+      document.querySelector('[data-admin-tab="seo"]')?.click();
+      return;
+    }
+    const body = draftBodyFromOpp(opp);
+    const meta = autoMeta(opp.title, body);
+    try {
+      await saveSeoPage({
+        id: opp.slug,
+        slug: opp.slug,
+        title: opp.title,
+        subtitle: opp.tip,
+        body,
+        metaTitle: meta.metaTitle,
+        metaDesc: meta.metaDesc,
+        keywords: `${opp.q}, Eskişehir, Sanas Technology`,
+        related: "İstiklal Yazılım | https://istiklalyazilim.com\nÇözümler | /introducing.html",
+        status: "draft",
+      });
+      await refreshSeoCache();
+      renderSeo();
+      document.querySelector('[data-admin-tab="seo"]')?.click();
+      alert(`Taslak hazır: /content/${opp.slug} — içeriği güçlendirip Yayınla.`);
+    } catch (err) {
+      alert(err?.message || "Taslak oluşturulamadı");
+    }
+  });
+
   /* Google allowlist */
   const allowListEl = document.querySelector("[data-allow-list]");
   const allowForm = document.querySelector("[data-allow-form]");
@@ -717,7 +823,9 @@ if (!user) {
     const opp = document.querySelector("[data-local-opps]");
     if (opp) {
       opp.innerHTML = LOCAL_OPPS.map(
-        (o) => `<li><strong>${o.q}</strong><span>${o.tip}</span></li>`,
+        (o, i) =>
+          `<li><strong>${o.q}</strong><span>${o.tip}</span>
+            <button type="button" class="admin-btn admin-btn-sm" data-opp-draft="${i}">Taslak oluştur</button></li>`,
       ).join("");
     }
 

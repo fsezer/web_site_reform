@@ -1,8 +1,12 @@
 import { initI18n } from "./i18n.js";
 import { initAnalytics } from "./analytics.js";
+import { injectOrganizationSchema } from "./schema.js";
+import { injectSearchConsoleMeta } from "./siteSettings.js";
 
 initI18n();
 initAnalytics();
+injectOrganizationSchema();
+void injectSearchConsoleMeta();
 
 const body = document.body;
 const navToggle = document.querySelector("[data-nav-toggle]");
