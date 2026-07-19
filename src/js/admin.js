@@ -903,6 +903,32 @@ if (!user) {
             .join("")
         : `<tr><td colspan="3" class="admin-empty">Kayıt yok</td></tr>`;
     }
+
+    const note = document.querySelector("[data-analiz-live-note]");
+    const pathBody = document.querySelector("[data-analiz-paths]");
+    if (note) {
+      note.textContent = live
+        ? `Canlı · ${Array.isArray(hits) ? hits.length : 0} hit (seçili aralık + önceki dönem)`
+        : "Hit okunamadı · örnek veri gösteriliyor";
+    }
+    if (pathBody) {
+      if (!live || !hits?.length) {
+        pathBody.innerHTML = `<tr><td colspan="2" class="admin-empty">Henüz hit yok</td></tr>`;
+      } else {
+        const fromStr = ymd(from);
+        const toStr = ymd(to);
+        const inRange = hits.filter((h) => h.date >= fromStr && h.date <= toStr);
+        const map = new Map();
+        inRange.forEach((h) => {
+          const p = String(h.path || "/").split("?")[0] || "/";
+          map.set(p, (map.get(p) || 0) + 1);
+        });
+        const rows = [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
+        pathBody.innerHTML = rows.length
+          ? rows.map(([p, n]) => `<tr><td><code>${p}</code></td><td>${n}</td></tr>`).join("")
+          : `<tr><td colspan="2" class="admin-empty">Bu aralıkta hit yok</td></tr>`;
+      }
+    }
     return { byDate, byPage };
   }
 

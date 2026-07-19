@@ -177,12 +177,33 @@
         <div class="admin-card">
           <div class="admin-chart-box admin-chart-box-lg" data-analiz-chart></div>
         </div>
+        <div class="admin-two-col">
+          <div class="admin-card">
+            <div class="admin-card-bar"><h2>Sayfalar</h2></div>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Oran</th></tr></thead>
+                <tbody data-analiz-pages></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-bar"><h2>Ham path (canlı)</h2></div>
+            <p class="admin-hint" data-analiz-live-note>Firestore hit kayıtları</p>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Path</th><th>Hit</th></tr></thead>
+                <tbody data-analiz-paths></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
         <div class="admin-card">
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Oran</th></tr></thead>
-              <tbody data-analiz-pages></tbody>
-            </table>
+          <div class="admin-card-bar"><h2>Google ölçüm</h2></div>
+          <div class="admin-stack admin-measure-row">
+            <a class="admin-btn admin-btn-primary" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener">GA4 aç (G-HY4FN9MXS9)</a>
+            <a class="admin-btn" href="https://search.google.com/search-console?resource_id=sc-domain%3Asanastechnology.com" target="_blank" rel="noopener">Search Console</a>
+            <p class="admin-hint">Admin grafikleri site hit’lerinden gelir. Arama sorgusu / sıra için Search Console; detaylı kitle için GA4. Data API köprüsü sonraki mikro adım.</p>
           </div>
         </div>
       </section>

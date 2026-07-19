@@ -2096,9 +2096,11 @@ html[data-theme="light"] .admin-brand img {
   color: var(--admin-muted);
   line-height: 1.4;
 }
-.admin-status {
-  font-size: 0.78rem;
-  color: var(--admin-muted);
+.admin-measure-row {
+  padding-top: 0.35rem;
+}
+.admin-measure-row .admin-btn {
+  width: fit-content;
 }
 .admin-status.is-ok {
   color: #34d399;
