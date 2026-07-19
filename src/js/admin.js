@@ -5,13 +5,29 @@ import {
   LOCKED_ADMIN_EMAIL,
   saveAllowlist,
 } from "./allowlist.js";
+import { fetchHitsBetween } from "./analytics.js";
+import {
+  deleteNote,
+  deleteSeoPage,
+  listNotes,
+  listPublishedSeoForSitemap,
+  listSeoPages,
+  migrateLocalCmsIfNeeded,
+  publishSeoPage,
+  saveNote,
+  saveSeoPage,
+  unpublishSeoPage,
+} from "./cms.js";
 
 const KEYS = {
-  seo: "sanas-admin-seo",
-  notes: "sanas-admin-notes-v2",
   theme: "sanas-admin-theme",
   domain: "sanas-admin-domain-expiry",
 };
+
+/** @type {any[]} */
+let seoCache = [];
+/** @type {any[]} */
+let notesCache = [];
 
 const FIXED_PAGES = [
   { id: "home", label: "Ana Sayfa", path: "/" },
@@ -156,33 +172,55 @@ function rangeDates(from, to) {
 
 function pagesForSeg(seg) {
   if (seg === "fixed") return FIXED_PAGES.map((p) => ({ ...p, kind: "fixed" }));
-  return loadJSON(KEYS.seo, []).map((p) => ({
-    id: p.id,
-    label: p.title,
-    path: `/content/${p.slug}`,
-    kind: "seo",
-  }));
+  return seoCache
+    .filter((p) => p.status === "published" || seg === "seo")
+    .map((p) => ({
+      id: p.id,
+      label: p.title,
+      path: `/content/${p.slug}`,
+      kind: "seo",
+      slug: p.slug,
+    }));
 }
 
-function seriesFor(seg, from, to) {
+function pathMatchesPage(hitPath, page) {
+  const path = String(hitPath || "").split("?")[0];
+  if (page.kind === "fixed") {
+    if (page.path === "/") return path === "/" || path === "/index.html";
+    return path === page.path || path === page.path.replace(/\.html$/, "");
+  }
+  const slug = page.slug || page.path.replace(/^\/content\//, "");
+  return path === `/content/${slug}` || path === `/content/${slug}.html` || path.startsWith(`/content/${slug}?`);
+}
+
+function seriesFor(seg, from, to, hits = null) {
   const dates = rangeDates(from, to);
   const pages = pagesForSeg(seg);
+  const useHits = Array.isArray(hits);
+
+  const countFor = (page, dateStr) => {
+    if (!useHits) return mockViews(page.id, dateStr);
+    return hits.filter((h) => h.date === dateStr && pathMatchesPage(h.path, page)).length;
+  };
+
   const byDate = dates.map((d) => ({
     date: d,
-    total: pages.reduce((sum, p) => sum + mockViews(p.id, d), 0),
+    total: pages.reduce((sum, p) => sum + countFor(p, d), 0),
   }));
+
+  const prevFrom = addDays(from, -dates.length);
+  const prevTo = addDays(from, -1);
+  const prevDates = rangeDates(prevFrom, prevTo);
+
   const byPage = pages
     .map((p) => {
-      const views = dates.reduce((sum, d) => sum + mockViews(p.id, d), 0);
-      const prevFrom = addDays(from, -dates.length);
-      const prevTo = addDays(from, -1);
-      const prevDates = rangeDates(prevFrom, prevTo);
-      const prev = prevDates.reduce((sum, d) => sum + mockViews(p.id, d), 0);
+      const views = dates.reduce((sum, d) => sum + countFor(p, d), 0);
+      const prev = prevDates.reduce((sum, d) => sum + countFor(p, d), 0);
       const delta = prev ? ((views - prev) / prev) * 100 : 0;
       return { ...p, views, delta };
     })
     .sort((a, b) => b.views - a.views);
-  return { byDate, byPage };
+  return { byDate, byPage, live: useHits };
 }
 
 function kpiFrom(byPage) {
@@ -464,11 +502,41 @@ if (!user) {
   document.querySelector("[data-backup-export]")?.addEventListener("click", async () => {
     const payload = {
       exportedAt: new Date().toISOString(),
-      seo: loadJSON(KEYS.seo, []),
-      notes: loadJSON(KEYS.notes, []),
+      seo: seoCache,
+      notes: notesCache,
       allowlist: await fetchAllowlist(),
     };
     downloadBlob(`sanas-backup-${ymd(new Date())}.json`, JSON.stringify(payload, null, 2), "application/json");
+  });
+
+  document.querySelector("[data-sitemap-download]")?.addEventListener("click", async () => {
+    let published = seoCache.filter((p) => p.status === "published");
+    try {
+      published = await listPublishedSeoForSitemap();
+    } catch {
+      /* use cache */
+    }
+    const fixed = [
+      ["https://www.sanastechnology.com/", "1.0"],
+      ["https://www.sanastechnology.com/about.html", "0.8"],
+      ["https://www.sanastechnology.com/projects.html", "0.8"],
+      ["https://www.sanastechnology.com/introducing.html", "0.7"],
+      ["https://www.sanastechnology.com/team.html", "0.6"],
+      ["https://www.sanastechnology.com/contact.html", "0.6"],
+    ];
+    const today = ymd(new Date());
+    const urls = [
+      ...fixed.map(
+        ([loc, pri]) =>
+          `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${pri}</priority>\n  </url>`,
+      ),
+      ...published.map((p) => {
+        const mod = p.updated ? ymd(new Date(p.updated)) : today;
+        return `  <url>\n    <loc>https://www.sanastechnology.com/content/${p.slug}</loc>\n    <lastmod>${mod}</lastmod>\n    <priority>0.5</priority>\n  </url>`;
+      }),
+    ];
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
+    downloadBlob(`sitemap-${today}.xml`, xml, "application/xml");
   });
 
   /* Google allowlist */
@@ -596,10 +664,22 @@ if (!user) {
     return { from: y, to: y };
   }
 
-  function renderDashboard() {
+  async function loadHits(from, to) {
+    try {
+      return await fetchHitsBetween(ymd(from), ymd(to));
+    } catch {
+      return null;
+    }
+  }
+
+  async function renderDashboard() {
     const { from, to } = dashBounds(dashRange?.value || "yesterday");
-    const { byDate, byPage } = seriesFor(dashSeg, from, to);
+    const prevFrom = addDays(from, -rangeDates(from, to).length);
+    const hits = await loadHits(prevFrom, to);
+    const { byDate, byPage, live } = seriesFor(dashSeg, from, to, hits);
     const kpi = kpiFrom(byPage);
+    const titleEl = document.querySelector("[data-dash-title]");
+    if (titleEl) titleEl.textContent = live ? "Trend (canlı)" : "Trend (örnek)";
     const kpiEl = document.querySelector("[data-dash-kpi]");
     if (kpiEl) {
       kpiEl.innerHTML = `
@@ -645,13 +725,15 @@ if (!user) {
     if (health) {
       const expiry = localStorage.getItem(KEYS.domain) || ymd(addDays(new Date(), 365));
       const left = Math.ceil((new Date(expiry) - new Date()) / 86400000);
-      const seoCount = loadJSON(KEYS.seo, []).length;
+      const seoCount = seoCache.length;
+      const pubCount = seoCache.filter((x) => x.status === "published").length;
       health.innerHTML = `
         <li><span>Domain</span><strong class="${left < 30 ? "is-warn" : ""}">${left} gün</strong></li>
         <li><span>SSL</span><strong class="is-ok">Aktif</strong></li>
         <li><span>Sitemap</span><strong class="is-ok">/sitemap.xml</strong></li>
-        <li><span>SEO sayfa</span><strong>${seoCount}</strong></li>
-        <li><span>GA4</span><strong class="is-ok">G-HY4FN9MXS9</strong></li>`;
+        <li><span>SEO sayfa</span><strong>${seoCount} (${pubCount} yayında)</strong></li>
+        <li><span>GA4</span><strong class="is-ok">G-HY4FN9MXS9</strong></li>
+        <li><span>Firestore</span><strong class="is-ok">not + SEO</strong></li>`;
     }
   }
 
@@ -659,13 +741,13 @@ if (!user) {
     btn.addEventListener("click", () => {
       dashSeg = btn.getAttribute("data-seg");
       document.querySelectorAll("[data-dash-seg] [data-seg]").forEach((b) => b.classList.toggle("is-active", b === btn));
-      renderDashboard();
+      void renderDashboard();
     });
   });
-  dashRange?.addEventListener("change", renderDashboard);
-  dashType?.addEventListener("change", renderDashboard);
-  document.querySelector("[data-dash-refresh]")?.addEventListener("click", renderDashboard);
-  renderDashboard();
+  dashRange?.addEventListener("change", () => void renderDashboard());
+  dashType?.addEventListener("change", () => void renderDashboard());
+  document.querySelector("[data-dash-refresh]")?.addEventListener("click", () => void renderDashboard());
+  void renderDashboard();
 
   /* ---------- ANALIZ ---------- */
   let analizSeg = "fixed";
@@ -691,12 +773,17 @@ if (!user) {
   applyPreset("yesterday");
   if (presetSel) presetSel.value = "yesterday";
 
-  function renderAnaliz() {
+  async function renderAnaliz() {
     const from = new Date(fromInput.value || ymd(yesterday()));
     const to = new Date(toInput.value || ymd(yesterday()));
-    const { byDate, byPage } = seriesFor(analizSeg, from, to);
+    const prevFrom = addDays(from, -rangeDates(from, to).length);
+    const hits = await loadHits(prevFrom, to);
+    const { byDate, byPage, live } = seriesFor(analizSeg, from, to, hits);
     const total = byPage.reduce((s, p) => s + p.views, 0) || 1;
-    renderChart(document.querySelector("[data-analiz-chart]"), byDate, chartSel?.value || "bar");
+    const box = document.querySelector("[data-analiz-chart]");
+    renderChart(box, byDate, chartSel?.value || "bar");
+    if (box && live) box.dataset.live = "1";
+    else if (box) delete box.dataset.live;
     const tbody = document.querySelector("[data-analiz-pages]");
     if (tbody) {
       tbody.innerHTML = byPage.length
@@ -715,29 +802,29 @@ if (!user) {
     btn.addEventListener("click", () => {
       analizSeg = btn.getAttribute("data-seg");
       document.querySelectorAll("[data-analiz-seg] [data-seg]").forEach((b) => b.classList.toggle("is-active", b === btn));
-      renderAnaliz();
+      void renderAnaliz();
     });
   });
 
   presetSel?.addEventListener("change", () => {
     if (presetSel.value !== "custom") applyPreset(presetSel.value);
-    renderAnaliz();
+    void renderAnaliz();
   });
 
   document.querySelector("[data-analiz-form]")?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (presetSel) presetSel.value = "custom";
-    renderAnaliz();
+    void renderAnaliz();
   });
 
-  document.querySelector("[data-analiz-csv]")?.addEventListener("click", () => {
-    const { byPage } = renderAnaliz();
+  document.querySelector("[data-analiz-csv]")?.addEventListener("click", async () => {
+    const { byPage } = await renderAnaliz();
     const rows = [["Sayfa", "Path", "Goruntulenme"], ...byPage.map((p) => [p.label, p.path, p.views])];
     downloadBlob(`analiz-${analizSeg}-${fromInput.value}-${toInput.value}.csv`, toCSV(rows), "text/csv;charset=utf-8");
   });
 
-  document.querySelector("[data-analiz-xlsx]")?.addEventListener("click", () => {
-    const { byPage } = renderAnaliz();
+  document.querySelector("[data-analiz-xlsx]")?.addEventListener("click", async () => {
+    const { byPage } = await renderAnaliz();
     const rows = [["Sayfa", "Path", "Goruntulenme"], ...byPage.map((p) => [p.label, p.path, p.views])];
     downloadBlob(
       `analiz-${analizSeg}-${fromInput.value}-${toInput.value}.xls`,
@@ -746,24 +833,29 @@ if (!user) {
     );
   });
 
-  document.querySelector("[data-analiz-refresh]")?.addEventListener("click", renderAnaliz);
-  chartSel?.addEventListener("change", renderAnaliz);
+  document.querySelector("[data-analiz-refresh]")?.addEventListener("click", () => void renderAnaliz());
+  chartSel?.addEventListener("change", () => void renderAnaliz());
 
-  renderAnaliz();
+  void renderAnaliz();
 
-  /* ---------- SEO CRUD ---------- */
+  /* ---------- SEO CRUD (Firestore) ---------- */
   let seoPage = 1;
   let seoSort = { key: "updated", dir: -1 };
   const seoModal = document.querySelector("[data-seo-modal]");
   const seoForm = document.querySelector("[data-seo-form]");
   const seoSearch = document.querySelector("[data-seo-search]");
 
-  function getSeo() {
-    return loadJSON(KEYS.seo, []);
+  async function refreshSeoCache() {
+    try {
+      seoCache = await listSeoPages();
+    } catch (err) {
+      console.warn("SEO listesi okunamadı", err);
+      seoCache = [];
+    }
   }
 
-  function setSeo(list) {
-    saveJSON(KEYS.seo, list);
+  function getSeo() {
+    return seoCache;
   }
 
   function filteredSeo() {
@@ -800,16 +892,18 @@ if (!user) {
       tbody.innerHTML = slice.length
         ? slice
             .map((p) => {
-              const views = mockViews(p.id, ymd(yesterday()));
               const sc = scoreSeo(p);
+              const st = p.status === "published" ? "Yayında" : "Taslak";
               return `<tr>
                 <td><code>/content/${p.slug}</code></td>
                 <td>${p.title}</td>
-                <td>${views}</td>
+                <td><span class="admin-status ${p.status === "published" ? "is-ok" : ""}">${st}</span></td>
                 <td><span class="admin-score-pill" data-score="${sc.score}">${sc.score}</span></td>
                 <td>${new Date(p.updated).toLocaleDateString("tr-TR")}</td>
                 <td class="admin-row-actions">
                   <button type="button" class="admin-btn admin-btn-sm" data-seo-edit="${p.id}">Düzenle</button>
+                  <button type="button" class="admin-btn admin-btn-sm" data-seo-publish="${p.id}">${p.status === "published" ? "Kaldır" : "Yayınla"}</button>
+                  <a class="admin-btn admin-btn-sm" href="/content/${p.slug}" target="_blank" rel="noopener">Aç</a>
                   <button type="button" class="admin-btn admin-btn-sm admin-btn-danger" data-seo-del="${p.id}">Sil</button>
                 </td>
               </tr>`;
@@ -824,8 +918,8 @@ if (!user) {
         return `<button type="button" class="admin-page-btn ${n === seoPage ? "is-active" : ""}" data-seo-page="${n}">${n}</button>`;
       }).join("");
     }
-    renderDashboard();
-    renderAnaliz();
+    void renderDashboard();
+    void renderAnaliz();
   }
 
   function refreshSeoScore() {
@@ -894,16 +988,17 @@ if (!user) {
     b.addEventListener("click", () => closeModal(seoModal));
   });
 
-  seoForm?.addEventListener("submit", (e) => {
+  seoForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const fd = new FormData(seoForm);
-    const id = String(fd.get("id") || "") || crypto.randomUUID();
+    const id = String(fd.get("id") || "").trim();
     const title = String(fd.get("title") || "").trim();
     const slug = String(fd.get("slug") || slugify(title)).trim();
     const body = String(fd.get("body") || "").trim();
     const generatedMeta = autoMeta(title, body);
+    const prev = id ? getSeo().find((p) => p.id === id) : null;
     const item = {
-      id,
+      id: slug,
       title,
       slug,
       subtitle: String(fd.get("subtitle") || "").trim(),
@@ -912,22 +1007,24 @@ if (!user) {
       metaDesc: String(fd.get("metaDesc") || generatedMeta.metaDesc).trim(),
       keywords: String(fd.get("keywords") || generatedMeta.keywords).trim(),
       related: String(fd.get("related") || "").trim(),
-      views: 0,
+      status: prev?.status || "draft",
+      created: prev?.created || Date.now(),
       updated: Date.now(),
-      created: Date.now(),
     };
-    const list = getSeo().filter((p) => p.id !== id);
-    const prev = getSeo().find((p) => p.id === id);
-    if (prev) item.created = prev.created;
-    list.unshift(item);
-    setSeo(list);
-    closeModal(seoModal);
-    renderSeo();
+    try {
+      await saveSeoPage(item, prev?.slug || id);
+      await refreshSeoCache();
+      closeModal(seoModal);
+      renderSeo();
+    } catch (err) {
+      alert(err?.message || "SEO kaydı yazılamadı");
+    }
   });
 
-  document.querySelector("[data-seo-tbody]")?.addEventListener("click", (e) => {
+  document.querySelector("[data-seo-tbody]")?.addEventListener("click", async (e) => {
     const edit = e.target.closest("[data-seo-edit]");
     const del = e.target.closest("[data-seo-del]");
+    const pub = e.target.closest("[data-seo-publish]");
     if (edit) {
       const item = getSeo().find((p) => p.id === edit.getAttribute("data-seo-edit"));
       if (!item) return;
@@ -944,11 +1041,29 @@ if (!user) {
       refreshSeoScore();
       openModal(seoModal);
     }
+    if (pub) {
+      const id = pub.getAttribute("data-seo-publish");
+      const item = getSeo().find((p) => p.id === id);
+      if (!item) return;
+      try {
+        if (item.status === "published") await unpublishSeoPage(id);
+        else await publishSeoPage(id);
+        await refreshSeoCache();
+        renderSeo();
+      } catch (err) {
+        alert(err?.message || "Yayınlama başarısız");
+      }
+    }
     if (del) {
       const id = del.getAttribute("data-seo-del");
       if (!confirm("Silinsin mi?")) return;
-      setSeo(getSeo().filter((p) => p.id !== id));
-      renderSeo();
+      try {
+        await deleteSeoPage(id);
+        await refreshSeoCache();
+        renderSeo();
+      } catch (err) {
+        alert(err?.message || "Silinemedi");
+      }
     }
   });
 
@@ -977,21 +1092,24 @@ if (!user) {
     }, 180);
   });
 
-  renderSeo();
-
-  /* ---------- NOTES CRUD ---------- */
+  /* ---------- NOTES CRUD (Firestore) ---------- */
   const notesModal = document.querySelector("[data-notes-modal]");
   const notesForm = document.querySelector("[data-notes-form]");
   const notesSearch = document.querySelector("[data-notes-search]");
   const notesDelete = document.querySelector("[data-notes-delete]");
   let notesPage = 1;
 
-  function getNotes() {
-    return loadJSON(KEYS.notes, []).sort((a, b) => b.updated - a.updated);
+  async function refreshNotesCache() {
+    try {
+      notesCache = await listNotes();
+    } catch (err) {
+      console.warn("Notlar okunamadı", err);
+      notesCache = [];
+    }
   }
 
-  function setNotes(list) {
-    saveJSON(KEYS.notes, list);
+  function getNotes() {
+    return notesCache;
   }
 
   function renderNotes() {
@@ -1039,33 +1157,42 @@ if (!user) {
     b.addEventListener("click", () => closeModal(notesModal));
   });
 
-  notesForm?.addEventListener("submit", (e) => {
+  notesForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const fd = new FormData(notesForm);
     const id = String(fd.get("id") || "") || crypto.randomUUID();
+    const prev = getNotes().find((n) => n.id === id);
     const item = {
       id,
       title: String(fd.get("title") || "").trim(),
       body: String(fd.get("body") || "").trim(),
       updated: Date.now(),
-      created: Date.now(),
+      created: prev?.created || Date.now(),
     };
-    const prev = getNotes().find((n) => n.id === id);
-    if (prev) item.created = prev.created;
-    setNotes([item, ...getNotes().filter((n) => n.id !== id)]);
-    closeModal(notesModal);
-    renderNotes();
+    try {
+      await saveNote(item);
+      await refreshNotesCache();
+      closeModal(notesModal);
+      renderNotes();
+    } catch (err) {
+      alert(err?.message || "Not yazılamadı");
+    }
   });
 
-  notesDelete?.addEventListener("click", () => {
+  notesDelete?.addEventListener("click", async () => {
     const id = notesForm.id.value;
     if (!id || !confirm("Silinsin mi?")) return;
-    setNotes(getNotes().filter((n) => n.id !== id));
-    closeModal(notesModal);
-    renderNotes();
+    try {
+      await deleteNote(id);
+      await refreshNotesCache();
+      closeModal(notesModal);
+      renderNotes();
+    } catch (err) {
+      alert(err?.message || "Silinemedi");
+    }
   });
 
-  document.querySelector("[data-notes-grid]")?.addEventListener("click", (e) => {
+  document.querySelector("[data-notes-grid]")?.addEventListener("click", async (e) => {
     const edit = e.target.closest("[data-notes-edit]");
     const del = e.target.closest("[data-notes-del]");
     if (edit) {
@@ -1080,8 +1207,13 @@ if (!user) {
     if (del) {
       const id = del.getAttribute("data-notes-del");
       if (!confirm("Silinsin mi?")) return;
-      setNotes(getNotes().filter((n) => n.id !== id));
-      renderNotes();
+      try {
+        await deleteNote(id);
+        await refreshNotesCache();
+        renderNotes();
+      } catch (err) {
+        alert(err?.message || "Silinemedi");
+      }
     }
   });
 
@@ -1095,5 +1227,11 @@ if (!user) {
     notesPage = 1;
     renderNotes();
   });
+
+  await migrateLocalCmsIfNeeded();
+  await refreshSeoCache();
+  await refreshNotesCache();
+  renderSeo();
   renderNotes();
 }
+

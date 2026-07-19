@@ -2086,8 +2086,12 @@ html[data-theme="light"] .admin-brand img {
   color: var(--admin-muted);
   line-height: 1.4;
 }
-.admin-hint.is-error {
-  color: var(--admin-danger, #f87171);
+.admin-status {
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+}
+.admin-status.is-ok {
+  color: #34d399;
 }
 .admin-input {
   border: 1px solid var(--admin-border);

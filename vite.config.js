@@ -27,6 +27,7 @@ export default defineConfig({
         login: resolve(__dirname, "login.html"),
         admin: resolve(__dirname, "admin.html"),
         contentExample: resolve(__dirname, "content/20-yuzyil-en-iyi-diller.html"),
+        contentLive: resolve(__dirname, "content.html"),
       },
     },
   },

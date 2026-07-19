@@ -19,7 +19,7 @@ service cloud.firestore {
         && email() in get(/databases/$(database)/documents/settings/admins).data.emails;
     }
 
-    function canManageAdmins() {
+    function isAdmin() {
       return isLockedAdmin()
         || email() == 'fsezer.mail@gmail.com'
         || isListedAdmin();
@@ -27,9 +27,35 @@ service cloud.firestore {
 
     match /settings/admins {
       allow read: if signedIn();
-      allow write: if canManageAdmins()
+      allow write: if isAdmin()
         && request.resource.data.locked == 'admin@istiklalyazilim.com'
         && 'admin@istiklalyazilim.com' in request.resource.data.emails;
+    }
+
+    match /notes/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /seoPages/{id} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /hits/{id} {
+      allow create: if request.resource.data.keys().hasAll(['path', 'date', 'ts'])
+        && request.resource.data.path is string
+        && request.resource.data.path.size() > 0
+        && request.resource.data.path.size() < 200
+        && request.resource.data.date is string
+        && request.resource.data.date.size() == 10
+        && request.resource.data.ts is int;
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    match /stats/{docId} {
+      allow read: if isAdmin();
+      allow write: if false;
     }
   }
 }
