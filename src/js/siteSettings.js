@@ -18,14 +18,20 @@ export async function savePublicSettings(partial) {
   return fetchPublicSettings();
 }
 
-/** Inject Google Search Console verification meta if configured. */
-export async function injectSearchConsoleMeta() {
-  if (document.querySelector('meta[name="google-site-verification"]')) return;
-  const data = await fetchPublicSettings();
-  const code = String(data.googleSiteVerification || "").trim();
+function ensureMeta(name, content) {
+  const code = String(content || "").trim();
   if (!code) return;
+  if (document.querySelector(`meta[name="${name}"]`)) return;
   const meta = document.createElement("meta");
-  meta.name = "google-site-verification";
+  meta.name = name;
   meta.content = code;
   document.head.appendChild(meta);
+}
+
+/** Inject Google / Bing / Yandex verification metas if configured. */
+export async function injectSearchConsoleMeta() {
+  const data = await fetchPublicSettings();
+  ensureMeta("google-site-verification", data.googleSiteVerification);
+  ensureMeta("msvalidate.01", data.bingSiteVerification);
+  ensureMeta("yandex-verification", data.yandexSiteVerification);
 }

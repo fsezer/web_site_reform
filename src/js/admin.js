@@ -5,7 +5,6 @@ import {
   LOCKED_ADMIN_EMAIL,
   saveAllowlist,
 } from "./allowlist.js";
-import { fetchHitsBetween } from "./analytics.js";
 import {
   deleteNote,
   deleteSeoPage,
@@ -19,7 +18,8 @@ import {
   unpublishSeoPage,
 } from "./cms.js";
 import { fetchPublicSettings, savePublicSettings } from "./siteSettings.js";
-import { GA4_REPORT_URL } from "./firebase.js";
+import { GA4_REPORT_URL, SC_REPORT_URL } from "./firebase.js";
+import { initAdminPwa } from "./adminPwa.js";
 
 const KEYS = {
   theme: "sanas-admin-theme",
@@ -201,14 +201,6 @@ function scoreSeo(item) {
   return { score: Math.min(100, score), hint: hints[0] || "Hazır" };
 }
 
-/** Deterministic mock until GA4 Data API is wired. */
-function mockViews(pageId, dateStr) {
-  let h = 0;
-  const s = `${pageId}:${dateStr}`;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return 8 + (h % 90);
-}
-
 function rangeDates(from, to) {
   const out = [];
   let cur = new Date(from);
@@ -243,34 +235,31 @@ function pathMatchesPage(hitPath, page) {
   return path === `/content/${slug}` || path === `/content/${slug}.html` || path.startsWith(`/content/${slug}?`);
 }
 
-function seriesFor(seg, from, to, hits = null) {
+/** GA4 path rows → page series (no mock / no Firestore hits). */
+function seriesFromGa4(seg, from, to, ga4) {
   const dates = rangeDates(from, to);
   const pages = pagesForSeg(seg);
-  const useHits = Array.isArray(hits);
+  const dateMap = new Map((ga4?.byDate || []).map((d) => [d.date, Number(d.total) || 0]));
+  const pathRows = ga4?.byPath || [];
 
-  const countFor = (page, dateStr) => {
-    if (!useHits) return mockViews(page.id, dateStr);
-    return hits.filter((h) => h.date === dateStr && pathMatchesPage(h.path, page)).length;
-  };
+  const viewsForPage = (page) =>
+    pathRows
+      .filter((r) => pathMatchesPage(r.path, page))
+      .reduce((sum, r) => sum + (Number(r.views) || 0), 0);
 
   const byDate = dates.map((d) => ({
     date: d,
-    total: pages.reduce((sum, p) => sum + countFor(p, d), 0),
+    total: dateMap.has(d) ? dateMap.get(d) : 0,
   }));
-
-  const prevFrom = addDays(from, -dates.length);
-  const prevTo = addDays(from, -1);
-  const prevDates = rangeDates(prevFrom, prevTo);
 
   const byPage = pages
     .map((p) => {
-      const views = dates.reduce((sum, d) => sum + countFor(p, d), 0);
-      const prev = prevDates.reduce((sum, d) => sum + countFor(p, d), 0);
-      const delta = prev ? ((views - prev) / prev) * 100 : 0;
-      return { ...p, views, delta };
+      const views = viewsForPage(p);
+      return { ...p, views, delta: 0 };
     })
     .sort((a, b) => b.views - a.views);
-  return { byDate, byPage, live: useHits };
+
+  return { byDate, byPage, live: Boolean(ga4) };
 }
 
 function kpiFrom(byPage) {
@@ -478,6 +467,19 @@ function applyTheme(mode) {
   });
 }
 
+function toast(message, isError = false) {
+  const wrap = document.querySelector("[data-toast-wrap]");
+  if (!wrap) return;
+  const el = document.createElement("div");
+  el.className = `admin-toast${isError ? " is-error" : ""}`;
+  el.textContent = message;
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.classList.add("is-leaving");
+    setTimeout(() => el.remove(), 300);
+  }, 2400);
+}
+
 function openModal(el) {
   if (!el) return;
   el.hidden = false;
@@ -492,10 +494,100 @@ function closeModal(el) {
   }
 }
 
+/* Merkezi dialog — alert/confirm yerine markalı modal */
+function adminDialog({ title = "Bilgi", message = "", confirmText = "Tamam", cancelText = null, danger = false }) {
+  return new Promise((resolve) => {
+    const wrap = document.createElement("div");
+    wrap.className = "admin-modal";
+    wrap.innerHTML = `
+      <div class="admin-modal-backdrop" data-dlg-cancel></div>
+      <div class="admin-modal-card admin-modal-sm admin-dialog${danger ? " is-danger" : ""}" role="dialog" aria-modal="true">
+        <header class="admin-modal-head">
+          <h2></h2>
+          <button type="button" class="admin-icon-btn" data-dlg-cancel aria-label="Kapat">✕</button>
+        </header>
+        <p class="admin-dialog-msg"></p>
+        <div class="admin-dialog-actions">
+          ${cancelText ? '<button type="button" class="admin-btn" data-dlg-cancel-btn></button>' : ""}
+          <button type="button" class="admin-btn ${danger ? "admin-btn-danger" : "admin-btn-primary"}" data-dlg-ok></button>
+        </div>
+      </div>`;
+    wrap.querySelector("h2").textContent = title;
+    wrap.querySelector(".admin-dialog-msg").textContent = message;
+    const okBtn = wrap.querySelector("[data-dlg-ok]");
+    okBtn.textContent = confirmText;
+    const cancelBtn = wrap.querySelector("[data-dlg-cancel-btn]");
+    if (cancelBtn) cancelBtn.textContent = cancelText;
+
+    const done = (result) => {
+      closeModal(wrap);
+      wrap.remove();
+      document.removeEventListener("keydown", onKey);
+      resolve(result);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") done(false);
+    };
+    document.addEventListener("keydown", onKey);
+    okBtn.addEventListener("click", () => done(true));
+    wrap.querySelectorAll("[data-dlg-cancel], [data-dlg-cancel-btn]").forEach((el) => {
+      el.addEventListener("click", () => done(false));
+    });
+
+    document.body.appendChild(wrap);
+    openModal(wrap);
+    okBtn.focus();
+  });
+}
+
+const adminAlert = (message, title = "Bilgi") => adminDialog({ title, message });
+const adminError = (message, title = "Hata") => adminDialog({ title, message, danger: true, confirmText: "Kapat" });
+const adminConfirm = (message, { title = "Onay", confirmText = "Evet", danger = false } = {}) =>
+  adminDialog({ title, message, confirmText, cancelText: "Vazgeç", danger });
+
+/** Uzun işlem — ortada kapatılamayan bekleniyor modalı; butonları kilitle */
+function adminBusy(title = "Bekleniyor", message = "İşlem sürüyor…", lockButtons = []) {
+  const wrap = document.createElement("div");
+  wrap.className = "admin-modal admin-busy-modal";
+  wrap.innerHTML = `
+    <div class="admin-modal-backdrop"></div>
+    <div class="admin-modal-card admin-modal-sm admin-dialog admin-busy-card" role="dialog" aria-modal="true" aria-busy="true">
+      <header class="admin-modal-head">
+        <h2></h2>
+      </header>
+      <div class="admin-busy-body">
+        <span class="admin-busy-spinner" aria-hidden="true"></span>
+        <p class="admin-dialog-msg"></p>
+      </div>
+    </div>`;
+  wrap.querySelector("h2").textContent = title;
+  wrap.querySelector(".admin-dialog-msg").textContent = message;
+  const locked = [];
+  for (const btn of lockButtons) {
+    if (!btn || btn.disabled) continue;
+    btn.disabled = true;
+    locked.push(btn);
+  }
+  document.body.appendChild(wrap);
+  openModal(wrap);
+  return {
+    update(nextTitle, nextMessage) {
+      if (nextTitle) wrap.querySelector("h2").textContent = nextTitle;
+      if (nextMessage) wrap.querySelector(".admin-dialog-msg").textContent = nextMessage;
+    },
+    close() {
+      closeModal(wrap);
+      wrap.remove();
+      for (const btn of locked) btn.disabled = false;
+    },
+  };
+}
+
 const user = await requireAuth();
 if (!user) {
   /* redirecting */
 } else {
+  initAdminPwa();
   const who = document.querySelector("[data-admin-user]");
   if (who) who.textContent = user.email || "";
 
@@ -538,15 +630,32 @@ if (!user) {
     if ((localStorage.getItem(KEYS.theme) || "dark") === "system") applyTheme("system");
   });
 
-  /* session timeout (client stub until Firebase) */
+  /* session idle logout */
   const timeoutSel = document.querySelector("[data-session-timeout]");
   const timeoutKey = "sanas-admin-timeout-min";
+  let idleTimer = null;
+  function idleMinutes() {
+    return Number(localStorage.getItem(timeoutKey) || timeoutSel?.value || "60");
+  }
+  function bumpIdle() {
+    if (idleTimer) clearTimeout(idleTimer);
+    const mins = idleMinutes();
+    if (!mins || mins <= 0) return;
+    idleTimer = setTimeout(() => {
+      void logout();
+    }, mins * 60_000);
+  }
   if (timeoutSel) {
-    timeoutSel.value = localStorage.getItem(timeoutKey) || "60";
+    timeoutSel.value = String(idleMinutes() || 60);
     timeoutSel.addEventListener("change", () => {
       localStorage.setItem(timeoutKey, timeoutSel.value);
+      bumpIdle();
     });
   }
+  ["pointerdown", "keydown", "touchstart", "mousemove"].forEach((ev) => {
+    document.addEventListener(ev, bumpIdle, { passive: true });
+  });
+  bumpIdle();
 
   /* backup export */
   document.querySelector("[data-backup-export]")?.addEventListener("click", async () => {
@@ -557,6 +666,7 @@ if (!user) {
       allowlist: await fetchAllowlist(),
     };
     downloadBlob(`sanas-backup-${ymd(new Date())}.json`, JSON.stringify(payload, null, 2), "application/json");
+    toast("Yedek indirildi.");
   });
 
   document.querySelector("[data-sitemap-download]")?.addEventListener("click", async () => {
@@ -587,28 +697,27 @@ if (!user) {
     ];
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
     downloadBlob(`sitemap-${today}.xml`, xml, "application/xml");
+    toast("Sitemap XML indirildi.");
   });
 
   const scInput = document.querySelector("[data-sc-verification]");
-  const scMsg = document.querySelector("[data-sc-msg]");
+  const bingInput = document.querySelector("[data-bing-verification]");
+  const yandexInput = document.querySelector("[data-yandex-verification]");
   void fetchPublicSettings().then((s) => {
     if (scInput && s.googleSiteVerification) scInput.value = s.googleSiteVerification;
+    if (bingInput && s.bingSiteVerification) bingInput.value = s.bingSiteVerification;
+    if (yandexInput && s.yandexSiteVerification) yandexInput.value = s.yandexSiteVerification;
   });
-  document.querySelector("[data-sc-save]")?.addEventListener("click", async () => {
-    const code = String(scInput?.value || "").trim();
+  document.querySelector("[data-verification-save]")?.addEventListener("click", async () => {
     try {
-      await savePublicSettings({ googleSiteVerification: code });
-      if (scMsg) {
-        scMsg.hidden = false;
-        scMsg.textContent = code ? "Kaydedildi — tüm sayfalara meta eklenecek." : "Kod temizlendi.";
-        scMsg.classList.remove("is-error");
-      }
+      await savePublicSettings({
+        googleSiteVerification: String(scInput?.value || "").trim(),
+        bingSiteVerification: String(bingInput?.value || "").trim(),
+        yandexSiteVerification: String(yandexInput?.value || "").trim(),
+      });
+      toast("Doğrulama kodları kaydedildi.");
     } catch (err) {
-      if (scMsg) {
-        scMsg.hidden = false;
-        scMsg.textContent = err?.message || "Kaydedilemedi";
-        scMsg.classList.add("is-error");
-      }
+      toast(err?.message || "Kaydedilemedi", true);
     }
   });
 
@@ -618,7 +727,7 @@ if (!user) {
     const opp = LOCAL_OPPS[Number(btn.getAttribute("data-opp-draft"))];
     if (!opp) return;
     if (seoCache.some((p) => p.slug === opp.slug)) {
-      alert("Bu slug zaten var. SEO sekmesinden düzenle.");
+      await adminAlert("Bu slug zaten var. SEO sekmesinden düzenleyebilirsin.", "Sayfa zaten mevcut");
       document.querySelector('[data-admin-tab="seo"]')?.click();
       return;
     }
@@ -640,9 +749,9 @@ if (!user) {
       await refreshSeoCache();
       renderSeo();
       document.querySelector('[data-admin-tab="seo"]')?.click();
-      alert(`Taslak hazır: /content/${opp.slug} — içeriği güçlendirip Yayınla.`);
+      await adminAlert(`/content/${opp.slug} taslağı oluşturuldu. İçeriği güçlendirip Yayınla.`, "Taslak hazır");
     } catch (err) {
-      alert(err?.message || "Taslak oluşturulamadı");
+      await adminError(err?.message || "Taslak oluşturulamadı");
     }
   });
 
@@ -700,7 +809,8 @@ if (!user) {
     await saveAllowlist(list);
     bustAllowlistCache();
     if (input) input.value = "";
-    setAllowMsg("Eklendi. Kişi Google ile giriş yapabilir.");
+    setAllowMsg("");
+    toast("Yetkili eklendi — Google ile giriş yapabilir.");
     await renderAllowlist();
   });
 
@@ -712,6 +822,7 @@ if (!user) {
     const list = (await fetchAllowlist()).filter((x) => x !== email);
     await saveAllowlist(list);
     bustAllowlistCache();
+    toast("Yetkili kaldırıldı.");
     await renderAllowlist();
   });
 
@@ -771,9 +882,17 @@ if (!user) {
     return { from: y, to: y };
   }
 
-  async function loadHits(from, to) {
+  async function fetchGa4Days(days) {
     try {
-      return await fetchHitsBetween(ymd(from), ymd(to));
+      const user = auth.currentUser;
+      if (!user) return null;
+      const token = await user.getIdToken();
+      const res = await fetch(`${GA4_REPORT_URL}?days=${encodeURIComponent(days)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) return null;
+      return data;
     } catch {
       return null;
     }
@@ -781,12 +900,12 @@ if (!user) {
 
   async function renderDashboard() {
     const { from, to } = dashBounds(dashRange?.value || "yesterday");
-    const prevFrom = addDays(from, -rangeDates(from, to).length);
-    const hits = await loadHits(prevFrom, to);
-    const { byDate, byPage, live } = seriesFor(dashSeg, from, to, hits);
+    const days = Math.max(1, rangeDates(from, to).length);
+    const ga4 = await fetchGa4Days(days);
+    const { byDate, byPage, live } = seriesFromGa4(dashSeg, from, to, ga4);
     const kpi = kpiFrom(byPage);
     const titleEl = document.querySelector("[data-dash-title]");
-    if (titleEl) titleEl.textContent = live ? "Trend (canlı)" : "Trend (örnek)";
+    if (titleEl) titleEl.textContent = live ? "Trend (GA4)" : "Trend (GA4 yok)";
     const kpiEl = document.querySelector("[data-dash-kpi]");
     if (kpiEl) {
       kpiEl.innerHTML = `
@@ -817,6 +936,7 @@ if (!user) {
     falling.forEach((p) => {
       tips.push(`${p.label}: ${p.delta.toFixed(0)}% düşüş · içerik/CTA gözden geçir`);
     });
+    if (!live) tips.unshift("GA4 verisi alınamadı · Analiz’den ‘GA4’ten çek’ dene");
     if (!tips.length) tips.push("Trend dengeli · yeni yerel SEO sayfası üretmeyi düşünebilirsin");
     const tipList = document.querySelector("[data-dash-tip-list]");
     if (tipList) tipList.innerHTML = tips.map((t) => `<li>${t}</li>`).join("");
@@ -885,9 +1005,9 @@ if (!user) {
   async function renderAnaliz() {
     const from = new Date(fromInput.value || ymd(yesterday()));
     const to = new Date(toInput.value || ymd(yesterday()));
-    const prevFrom = addDays(from, -rangeDates(from, to).length);
-    const hits = await loadHits(prevFrom, to);
-    const { byDate, byPage, live } = seriesFor(analizSeg, from, to, hits);
+    const days = Math.max(1, rangeDates(from, to).length);
+    const ga4 = await fetchGa4Days(days);
+    const { byDate, byPage, live } = seriesFromGa4(analizSeg, from, to, ga4);
     const total = byPage.reduce((s, p) => s + p.views, 0) || 1;
     const box = document.querySelector("[data-analiz-chart]");
     renderChart(box, byDate, chartSel?.value || "bar");
@@ -909,25 +1029,17 @@ if (!user) {
     const pathBody = document.querySelector("[data-analiz-paths]");
     if (note) {
       note.textContent = live
-        ? `Canlı · ${Array.isArray(hits) ? hits.length : 0} hit (seçili aralık + önceki dönem)`
-        : "Hit okunamadı · örnek veri gösteriliyor";
+        ? `GA4 · ${ga4.from} → ${ga4.to} · ${ga4.rowCount} satır`
+        : "GA4 okunamadı · Analiz’den ‘GA4’ten çek’ dene";
     }
     if (pathBody) {
-      if (!live || !hits?.length) {
-        pathBody.innerHTML = `<tr><td colspan="2" class="admin-empty">Henüz hit yok</td></tr>`;
+      if (!live || !ga4?.byPath?.length) {
+        pathBody.innerHTML = `<tr><td colspan="2" class="admin-empty">Henüz GA4 satırı yok</td></tr>`;
       } else {
-        const fromStr = ymd(from);
-        const toStr = ymd(to);
-        const inRange = hits.filter((h) => h.date >= fromStr && h.date <= toStr);
-        const map = new Map();
-        inRange.forEach((h) => {
-          const p = String(h.path || "/").split("?")[0] || "/";
-          map.set(p, (map.get(p) || 0) + 1);
-        });
-        const rows = [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
-        pathBody.innerHTML = rows.length
-          ? rows.map(([p, n]) => `<tr><td><code>${p}</code></td><td>${n}</td></tr>`).join("")
-          : `<tr><td colspan="2" class="admin-empty">Bu aralıkta hit yok</td></tr>`;
+        pathBody.innerHTML = ga4.byPath
+          .slice(0, 20)
+          .map((r) => `<tr><td><code>${r.path}</code></td><td>${r.views}</td></tr>`)
+          .join("");
       }
     }
     return { byDate, byPage };
@@ -972,10 +1084,15 @@ if (!user) {
   chartSel?.addEventListener("change", () => void renderAnaliz());
 
   document.querySelector("[data-ga4-fetch]")?.addEventListener("click", async () => {
+    const btn = document.querySelector("[data-ga4-fetch]");
     const status = document.querySelector("[data-ga4-status]");
     const tbody = document.querySelector("[data-ga4-paths]");
     const days = document.querySelector("[data-ga4-days]")?.value || "7";
-    if (status) status.textContent = "GA4 çekiliyor…";
+    const busy = adminBusy("GA4", "Veriler çekiliyor…", [btn]);
+    if (status) {
+      status.classList.remove("is-error");
+      status.textContent = "GA4 çekiliyor…";
+    }
     try {
       const user = auth.currentUser;
       if (!user) throw new Error("Oturum yok");
@@ -998,11 +1115,204 @@ if (!user) {
       if (data.byDate?.length) {
         renderChart(document.querySelector("[data-analiz-chart]"), data.byDate, chartSel?.value || "bar");
       }
+      toast(`GA4 hazır · ${data.rowCount} satır`);
     } catch (err) {
       if (status) {
         status.textContent = err?.message || "GA4 çekilemedi";
         status.classList.add("is-error");
       }
+      toast(err?.message || "GA4 çekilemedi", true);
+    } finally {
+      busy.close();
+    }
+  });
+
+  document.querySelector("[data-sc-fetch]")?.addEventListener("click", async () => {
+    const btn = document.querySelector("[data-sc-fetch]");
+    const status = document.querySelector("[data-sc-status]");
+    const tbody = document.querySelector("[data-sc-queries]");
+    const days = document.querySelector("[data-sc-days]")?.value || "7";
+    const busy = adminBusy("Search Console", "Sorgular çekiliyor…", [btn]);
+    if (status) {
+      status.classList.remove("is-error");
+      status.textContent = "Search Console çekiliyor…";
+    }
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("Oturum yok");
+      const token = await user.getIdToken();
+      const res = await fetch(`${SC_REPORT_URL}?days=${encodeURIComponent(days)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      if (status) {
+        status.textContent = `SC · ${data.from} → ${data.to} · ${data.rowCount} sorgu`;
+      }
+      if (tbody) {
+        tbody.innerHTML = data.queries?.length
+          ? data.queries
+              .map(
+                (r) =>
+                  `<tr><td>${r.query}</td><td>${r.clicks}</td><td>${r.impressions}</td><td>${r.ctr}</td><td>${r.position}</td></tr>`,
+              )
+              .join("")
+          : `<tr><td colspan="5" class="admin-empty">Sorgu yok (yeni site / gecikme / SA yetkisi)</td></tr>`;
+      }
+      toast(`Search Console hazır · ${data.rowCount} sorgu`);
+    } catch (err) {
+      if (status) {
+        status.textContent = err?.message || "Search Console çekilemedi";
+        status.classList.add("is-error");
+      }
+      toast(err?.message || "Search Console çekilemedi", true);
+    } finally {
+      busy.close();
+    }
+  });
+
+  /* ---------- PageSpeed Insights (public API) ---------- */
+  const PSI_API = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
+  // Referrer kısıtlı tarayıcı anahtarı (yalnız PSI + sanastechnology.com/localhost)
+  const PSI_KEY = "AIzaSyDTlQpYbSvHd3IuCwg7w5oaxE1KqdRYGaI";
+  const PSI_CATS = ["performance", "accessibility", "best-practices", "seo"];
+
+  function psiScoreClass(n) {
+    if (n == null || Number.isNaN(n)) return "is-na";
+    if (n >= 90) return "is-good";
+    if (n >= 50) return "is-mid";
+    return "is-bad";
+  }
+
+  function setPsiRing(id, score01) {
+    const el = document.querySelector(`[data-psi-ring="${id}"]`);
+    if (!el) return;
+    const n = score01 == null ? null : Math.round(score01 * 100);
+    el.classList.remove("is-good", "is-mid", "is-bad", "is-na");
+    el.classList.add(psiScoreClass(n));
+    el.style.setProperty("--psi", n == null ? 0 : n);
+    el.querySelector("strong").textContent = n == null ? "—" : String(n);
+  }
+
+  function auditImpact(a) {
+    const ms = a.details?.overallSavingsMs;
+    const bytes = a.details?.overallSavingsBytes;
+    if (ms != null && ms > 0) return `~${Math.round(ms)} ms`;
+    if (bytes != null && bytes > 0) {
+      const kb = bytes / 1024;
+      return kb >= 1024 ? `~${(kb / 1024).toFixed(1)} MB` : `~${Math.round(kb)} KB`;
+    }
+    if (a.scoreDisplayMode === "binary") return a.score === 1 ? "OK" : "Başarısız";
+    return a.scoreDisplayMode === "informative" ? "Bilgi" : "—";
+  }
+
+  function collectPsiIssues(lhr) {
+    const audits = lhr?.audits || {};
+    const refs = new Set();
+    for (const cat of Object.values(lhr?.categories || {})) {
+      for (const r of cat.auditRefs || []) {
+        if (r.group === "hidden" || r.weight === 0) continue;
+        refs.add(r.id);
+      }
+    }
+    const items = [];
+    for (const id of refs) {
+      const a = audits[id];
+      if (!a || a.score == null || a.score >= 0.9) continue;
+      if (a.scoreDisplayMode === "informative" || a.scoreDisplayMode === "manual" || a.scoreDisplayMode === "notApplicable") continue;
+      items.push({
+        id,
+        title: a.title || id,
+        description: (a.description || "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").slice(0, 180),
+        score: Math.round(a.score * 100),
+        impact: auditImpact(a),
+      });
+    }
+    items.sort((a, b) => a.score - b.score);
+    return items.slice(0, 18);
+  }
+
+  function renderPsiVitals(lhr) {
+    const box = document.querySelector("[data-psi-vitals]");
+    if (!box) return;
+    const a = lhr?.audits || {};
+    const rows = [
+      ["LCP", a["largest-contentful-paint"]?.displayValue],
+      ["CLS", a["cumulative-layout-shift"]?.displayValue],
+      ["INP", a["interaction-to-next-paint"]?.displayValue || a["experimental-interaction-to-next-paint"]?.displayValue],
+      ["TBT", a["total-blocking-time"]?.displayValue],
+      ["FCP", a["first-contentful-paint"]?.displayValue],
+      ["SI", a["speed-index"]?.displayValue],
+    ].filter(([, v]) => v);
+    if (!rows.length) {
+      box.hidden = true;
+      box.innerHTML = "";
+      return;
+    }
+    box.hidden = false;
+    box.innerHTML = rows.map(([k, v]) => `<span><em>${k}</em> ${v}</span>`).join("");
+  }
+
+  document.querySelector("[data-psi-fetch]")?.addEventListener("click", async () => {
+    const btn = document.querySelector("[data-psi-fetch]");
+    const status = document.querySelector("[data-psi-status]");
+    const tbody = document.querySelector("[data-psi-issues]");
+    const pageUrl = document.querySelector("[data-psi-url]")?.value || "https://www.sanastechnology.com/";
+    const strategy = document.querySelector("[data-psi-strategy]")?.value || "mobile";
+    const busy = adminBusy(
+      "PageSpeed",
+      "Lighthouse çalışıyor… 15–40 sn sürebilir.",
+      [btn],
+    );
+    if (status) {
+      status.classList.remove("is-error");
+      status.textContent = `PageSpeed çalışıyor (${strategy})… 15–40 sn sürebilir`;
+    }
+    PSI_CATS.forEach((c) => setPsiRing(c, null));
+    if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty">Analiz ediliyor…</td></tr>`;
+    try {
+      const params = new URLSearchParams({ url: pageUrl, strategy, key: PSI_KEY });
+      for (const c of PSI_CATS) params.append("category", c);
+      const res = await fetch(`${PSI_API}?${params}`);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error?.message || `HTTP ${res.status}`);
+      }
+      const lhr = data.lighthouseResult;
+      const cats = lhr?.categories || {};
+      for (const c of PSI_CATS) setPsiRing(c, cats[c]?.score ?? null);
+      renderPsiVitals(lhr);
+      const issues = collectPsiIssues(lhr);
+      if (tbody) {
+        tbody.innerHTML = issues.length
+          ? issues
+              .map(
+                (i) =>
+                  `<tr>
+                    <td><strong>${i.title}</strong><br><span class="admin-muted">${i.description}</span></td>
+                    <td>${i.impact}</td>
+                    <td><span class="admin-score-pill" data-score="${i.score}">${i.score}</span></td>
+                  </tr>`,
+              )
+              .join("")
+          : `<tr><td colspan="3" class="admin-empty">Kritik eksik bulunamadı — skorlar iyi görünüyor</td></tr>`;
+      }
+      const perf = Math.round((cats.performance?.score ?? 0) * 100);
+      if (status) {
+        status.textContent = `${pageUrl.replace("https://www.sanastechnology.com", "") || "/"} · ${strategy} · Lighthouse ${lhr?.lighthouseVersion || ""} · Perf ${perf}`;
+      }
+      toast(`PageSpeed hazır · Perf ${perf}`);
+    } catch (err) {
+      if (status) {
+        status.textContent = err?.message || "PageSpeed çekilemedi";
+        status.classList.add("is-error");
+      }
+      if (tbody) tbody.innerHTML = `<tr><td colspan="3" class="admin-empty">Çekilemedi</td></tr>`;
+      toast(err?.message || "PageSpeed çekilemedi", true);
+    } finally {
+      busy.close();
     }
   });
 
@@ -1186,8 +1496,9 @@ if (!user) {
       await refreshSeoCache();
       closeModal(seoModal);
       renderSeo();
+      toast("SEO sayfası kaydedildi.");
     } catch (err) {
-      alert(err?.message || "SEO kaydı yazılamadı");
+      toast(err?.message || "SEO kaydı yazılamadı", true);
     }
   });
 
@@ -1221,18 +1532,24 @@ if (!user) {
         await refreshSeoCache();
         renderSeo();
       } catch (err) {
-        alert(err?.message || "Yayınlama başarısız");
+        await adminError(err?.message || "Yayınlama başarısız");
       }
     }
     if (del) {
       const id = del.getAttribute("data-seo-del");
-      if (!confirm("Silinsin mi?")) return;
+      const ok = await adminConfirm("Bu SEO sayfası kalıcı olarak silinecek.", {
+        title: "Sayfayı sil",
+        confirmText: "Sil",
+        danger: true,
+      });
+      if (!ok) return;
       try {
         await deleteSeoPage(id);
         await refreshSeoCache();
         renderSeo();
+        toast("SEO sayfası silindi.");
       } catch (err) {
-        alert(err?.message || "Silinemedi");
+        await adminError(err?.message || "Silinemedi");
       }
     }
   });
@@ -1344,21 +1661,29 @@ if (!user) {
       await refreshNotesCache();
       closeModal(notesModal);
       renderNotes();
+      toast("Not kaydedildi.");
     } catch (err) {
-      alert(err?.message || "Not yazılamadı");
+      toast(err?.message || "Not yazılamadı", true);
     }
   });
 
   notesDelete?.addEventListener("click", async () => {
     const id = notesForm.id.value;
-    if (!id || !confirm("Silinsin mi?")) return;
+    if (!id) return;
+    const ok = await adminConfirm("Bu not kalıcı olarak silinecek.", {
+      title: "Notu sil",
+      confirmText: "Sil",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await deleteNote(id);
       await refreshNotesCache();
       closeModal(notesModal);
       renderNotes();
+      toast("Not silindi.");
     } catch (err) {
-      alert(err?.message || "Silinemedi");
+      await adminError(err?.message || "Silinemedi");
     }
   });
 
@@ -1376,13 +1701,19 @@ if (!user) {
     }
     if (del) {
       const id = del.getAttribute("data-notes-del");
-      if (!confirm("Silinsin mi?")) return;
+      const ok = await adminConfirm("Bu not kalıcı olarak silinecek.", {
+        title: "Notu sil",
+        confirmText: "Sil",
+        danger: true,
+      });
+      if (!ok) return;
       try {
         await deleteNote(id);
         await refreshNotesCache();
         renderNotes();
+        toast("Not silindi.");
       } catch (err) {
-        alert(err?.message || "Silinemedi");
+        await adminError(err?.message || "Silinemedi");
       }
     }
   });

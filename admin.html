@@ -6,6 +6,10 @@
     <title>Admin — Sanas Technology</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#0a0a0b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Sanas Admin" />
+    <link rel="manifest" href="/admin.webmanifest" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
@@ -13,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/main.css" />
+    <link rel="stylesheet" href="/src/css/admin.css" />
     <script>
       (() => {
         try {
@@ -91,7 +96,7 @@
           <button type="button" data-seg="seo">SEO sayfaları</button>
         </div>
         <div class="admin-kpi" data-dash-kpi></div>
-        <div class="admin-card">
+        <div class="admin-card has-ac" style="--ac:#38bdf8">
           <div class="admin-card-bar">
             <h2 data-dash-title>Trend</h2>
             <div class="admin-inline-filters">
@@ -113,8 +118,13 @@
           </div>
           <div class="admin-chart-box" data-dash-chart></div>
         </div>
-        <div class="admin-card">
-          <div class="admin-card-bar"><h2>Sayfalar</h2></div>
+        <div class="admin-card has-ac" style="--ac:#34d399">
+          <div class="admin-card-bar">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5h8v9H5.2L3 9.3V2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 5h4M5 7.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              Sayfalar
+            </h2>
+          </div>
           <div class="admin-table-wrap">
             <table class="admin-table">
               <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Δ</th></tr></thead>
@@ -122,17 +132,32 @@
             </table>
           </div>
         </div>
-        <div class="admin-card" data-dash-tips>
-          <div class="admin-card-bar"><h2>Öneriler</h2></div>
+        <div class="admin-card has-ac" style="--ac:#fbbf24" data-dash-tips>
+          <div class="admin-card-bar">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#fbbf24"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.8a3.6 3.6 0 0 1 2 6.6c-.5.35-.7.8-.7 1.3H5.7c0-.5-.2-.95-.7-1.3a3.6 3.6 0 0 1 2-6.6Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M5.8 11.6h2.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              Öneriler
+            </h2>
+          </div>
           <ul class="admin-tip-list" data-dash-tip-list></ul>
         </div>
         <div class="admin-two-col">
-          <div class="admin-card">
-            <div class="admin-card-bar"><h2>Yerel fırsatlar</h2></div>
+          <div class="admin-card has-ac" style="--ac:#a78bfa">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#a78bfa"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12.3s4.4-3.6 4.4-6.9A4.4 4.4 0 0 0 2.6 5.4c0 3.3 4.4 6.9 4.4 6.9Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+                Yerel fırsatlar
+              </h2>
+            </div>
             <ul class="admin-opp-list" data-local-opps></ul>
           </div>
-          <div class="admin-card">
-            <div class="admin-card-bar"><h2>Sağlık</h2></div>
+          <div class="admin-card has-ac" style="--ac:#f472b6">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#f472b6"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12S2.4 9.2 2.4 5.9A2.7 2.7 0 0 1 7 4a2.7 2.7 0 0 1 4.6 1.9C11.6 9.2 7 12 7 12Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
+                Sağlık
+              </h2>
+            </div>
             <ul class="admin-health-list" data-health-list></ul>
           </div>
         </div>
@@ -174,12 +199,17 @@
           <button type="button" class="admin-btn" data-analiz-csv>CSV</button>
           <button type="button" class="admin-btn" data-analiz-xlsx>Excel</button>
         </form>
-        <div class="admin-card">
+        <div class="admin-card has-ac" style="--ac:#38bdf8">
           <div class="admin-chart-box admin-chart-box-lg" data-analiz-chart></div>
         </div>
         <div class="admin-two-col">
-          <div class="admin-card">
-            <div class="admin-card-bar"><h2>Sayfalar</h2></div>
+          <div class="admin-card has-ac" style="--ac:#34d399">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5h8v9H5.2L3 9.3V2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 5h4M5 7.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                Sayfalar
+              </h2>
+            </div>
             <div class="admin-table-wrap">
               <table class="admin-table">
                 <thead><tr><th>Sayfa</th><th>Görüntülenme</th><th>Oran</th></tr></thead>
@@ -187,9 +217,14 @@
               </table>
             </div>
           </div>
-          <div class="admin-card">
-            <div class="admin-card-bar"><h2>Ham path (canlı)</h2></div>
-            <p class="admin-hint" data-analiz-live-note>Firestore hit kayıtları</p>
+          <div class="admin-card has-ac" style="--ac:#22d3ee">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#22d3ee"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h2.4l1.4-3.4 2.4 6.8L9.6 7H12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                Ham path (canlı)
+              </h2>
+            </div>
+            <p class="admin-hint" data-analiz-live-note>GA4 path görünümleri</p>
             <div class="admin-table-wrap">
               <table class="admin-table">
                 <thead><tr><th>Path</th><th>Hit</th></tr></thead>
@@ -198,29 +233,100 @@
             </div>
           </div>
         </div>
-          <div class="admin-card">
-            <div class="admin-card-bar"><h2>Google ölçüm</h2></div>
-            <div class="admin-stack admin-measure-row">
+        <div class="admin-two-col">
+          <div class="admin-card has-ac" style="--ac:#f59e0b">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#f59e0b"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11V7.5M5.5 11V3.5M9 11V6M12 11V2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+                GA4
+              </h2>
               <div class="admin-inline-filters">
                 <select data-ga4-days>
                   <option value="7">7 gün</option>
                   <option value="14">14 gün</option>
                   <option value="28">28 gün</option>
                 </select>
-                <button type="button" class="admin-btn admin-btn-primary" data-ga4-fetch>GA4’ten çek</button>
+                <button type="button" class="admin-btn admin-btn-primary" data-ga4-fetch>Çek</button>
+                <a class="admin-ico-link" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener" title="GA4 konsol" aria-label="GA4 konsol">
+                  <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#F9AB00" d="M15.5 3.5v17a2.5 2.5 0 0 0 5 0v-17a2.5 2.5 0 0 0-5 0Z"/><path fill="#E37400" d="M9.5 12v8.5a2.5 2.5 0 0 0 5 0V12a2.5 2.5 0 0 0-5 0Z"/><circle fill="#E37400" cx="6" cy="20.5" r="2.5"/></svg>
+                </a>
               </div>
-              <p class="admin-hint" data-ga4-status>Data API hazır olunca buradan gelir.</p>
-              <div class="admin-table-wrap">
-                <table class="admin-table">
-                  <thead><tr><th>GA4 path</th><th>Görüntülenme</th></tr></thead>
-                  <tbody data-ga4-paths><tr><td colspan="2" class="admin-empty">Henüz çekilmedi</td></tr></tbody>
-                </table>
-              </div>
-              <a class="admin-btn" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener">GA4 konsol</a>
-              <a class="admin-btn" href="https://search.google.com/search-console?resource_id=sc-domain%3Asanastechnology.com" target="_blank" rel="noopener">Search Console</a>
-              <p class="admin-hint">İlk kurulum: GA4 → Property access → <code>ga4-reader@sanas-502703.iam.gserviceaccount.com</code> → Viewer.</p>
+            </div>
+            <p class="admin-hint" data-ga4-status>GA4 path görünümleri</p>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Path</th><th>Görüntülenme</th></tr></thead>
+                <tbody data-ga4-paths><tr><td colspan="2" class="admin-empty">Henüz çekilmedi</td></tr></tbody>
+              </table>
             </div>
           </div>
+          <div class="admin-card has-ac" style="--ac:#4285f4">
+            <div class="admin-card-bar">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#4285f4"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9.2 9.2 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+                Search Console
+              </h2>
+              <div class="admin-inline-filters">
+                <select data-sc-days>
+                  <option value="7">7 gün</option>
+                  <option value="14">14 gün</option>
+                  <option value="28">28 gün</option>
+                </select>
+                <button type="button" class="admin-btn admin-btn-primary" data-sc-fetch>Çek</button>
+                <a class="admin-ico-link" href="https://search.google.com/search-console?resource_id=sc-domain%3Asanastechnology.com" target="_blank" rel="noopener" title="Search Console" aria-label="Search Console">
+                  <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path fill="#EA4335" d="M9 7.2v3.6h5.1c-.2 1.2-.9 2.2-1.9 2.9l3.1 2.4c1.8-1.7 2.8-4.1 2.8-7 0-.7-.1-1.3-.2-1.9H9z"/><path fill="#34A853" d="M4 10.7l-.7.5-2.3 1.8C2.5 15.7 5.5 18 9 18c2.4 0 4.4-.8 5.9-2.1l-3.1-2.4c-.8.6-1.9.9-2.8.9-2.2 0-4-1.5-4.7-3.5z"/><path fill="#4A90E2" d="M1 5.1C.4 6.2 0 7.5 0 9s.4 2.8 1 3.9l3-2.2c-.2-.6-.3-1.2-.3-1.7s.1-1.1.3-1.7L1 5.1z"/><path fill="#FBBC05" d="M9 3.6c1.3 0 2.5.5 3.4 1.3L15 2.3C13.4.9 11.4 0 9 0 5.5 0 2.5 2.3 1 5.1l3 2.3C5 5.1 6.8 3.6 9 3.6z"/></svg>
+                </a>
+              </div>
+            </div>
+            <p class="admin-hint" data-sc-status>Arama sorguları (tıklama / gösterim)</p>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Sorgu</th><th>Tık</th><th>Göst.</th><th>CTR%</th><th>Sıra</th></tr></thead>
+                <tbody data-sc-queries><tr><td colspan="5" class="admin-empty">Henüz çekilmedi</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card has-ac" style="--ac:#34d399" data-psi-card>
+          <div class="admin-card-bar">
+            <h2>
+              <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.8a5.2 5.2 0 1 0 5.2 5.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M7 7 10.2 3.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+              PageSpeed
+            </h2>
+            <div class="admin-inline-filters">
+              <select data-psi-url>
+                <option value="https://www.sanastechnology.com/">Ana sayfa</option>
+                <option value="https://www.sanastechnology.com/about.html">Hakkımızda</option>
+                <option value="https://www.sanastechnology.com/projects.html">Projeler</option>
+                <option value="https://www.sanastechnology.com/introducing.html">Çözümler</option>
+                <option value="https://www.sanastechnology.com/contact.html">İletişim</option>
+              </select>
+              <select data-psi-strategy>
+                <option value="mobile">Mobil</option>
+                <option value="desktop">Masaüstü</option>
+              </select>
+              <button type="button" class="admin-btn admin-btn-primary" data-psi-fetch>Skor çek</button>
+              <a class="admin-ico-link" href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwww.sanastechnology.com%2F" target="_blank" rel="noopener" title="PageSpeed Insights" aria-label="PageSpeed Insights">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12l4.5-4.5" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </a>
+            </div>
+          </div>
+          <p class="admin-hint" data-psi-status>Canlı Lighthouse skoru · 15–40 sn sürebilir</p>
+          <div class="admin-psi-scores" data-psi-scores>
+            <div class="admin-psi-ring" data-psi-ring="performance"><strong>—</strong><span>Performans</span></div>
+            <div class="admin-psi-ring" data-psi-ring="accessibility"><strong>—</strong><span>Erişilebilirlik</span></div>
+            <div class="admin-psi-ring" data-psi-ring="best-practices"><strong>—</strong><span>En iyi uygulamalar</span></div>
+            <div class="admin-psi-ring" data-psi-ring="seo"><strong>—</strong><span>SEO</span></div>
+          </div>
+          <div class="admin-psi-vitals" data-psi-vitals hidden></div>
+          <div class="admin-table-wrap" style="margin-top:.85rem">
+            <table class="admin-table">
+              <thead><tr><th>Eksik / iyileştirme</th><th>Etki</th><th>Skor</th></tr></thead>
+              <tbody data-psi-issues><tr><td colspan="3" class="admin-empty">Henüz çekilmedi — Skor çek’e bas</td></tr></tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <section class="admin-panel" data-panel="seo">
@@ -270,7 +376,7 @@
               <button type="button" data-theme="system">Sistem</button>
             </div>
           </div>
-          <div class="admin-card">
+          <div class="admin-card has-ac" style="--ac:#38bdf8">
             <h2>
               <span class="admin-nav-ico" style="--ic:#38bdf8"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.2a2.4 2.4 0 0 1 2.4 2.4v1.1h.9A1.5 1.5 0 0 1 11.8 7.2v3.1A1.5 1.5 0 0 1 10.3 11.8H3.7A1.5 1.5 0 0 1 2.2 10.3V7.2A1.5 1.5 0 0 1 3.7 5.7h.9V4.6A2.4 2.4 0 0 1 7 2.2Z" stroke="currentColor" stroke-width="1.2"/></svg></span>
               Oturum
@@ -283,9 +389,8 @@
                 <option value="0">Kapalı</option>
               </select>
             </label>
-            <p class="admin-hint">2FA (Google doğrulama kodu) Firebase aşamasında açılacak.</p>
           </div>
-          <div class="admin-card">
+          <div class="admin-card has-ac" style="--ac:#34d399">
             <h2>
               <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7.5M4.2 6.8 7 9.6l2.8-2.8M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               Yedek
@@ -294,23 +399,74 @@
               <button type="button" class="admin-btn" data-backup-export>SEO + Notlar indir (JSON)</button>
             </div>
           </div>
-          <div class="admin-card">
+          <div class="admin-card admin-card-wide has-ac" style="--ac:#fbbf24">
             <h2>
-              <span class="admin-nav-ico" style="--ic:#fbbf24"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-              Search Console
+              <span class="admin-nav-ico" style="--ic:#fbbf24"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9.2 9.2 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+              Webmaster
             </h2>
             <div class="admin-stack">
-              <label class="admin-field"><span>google-site-verification</span>
-                <input type="text" data-sc-verification placeholder="Search Console meta kodu" autocomplete="off" />
-              </label>
-              <button type="button" class="admin-btn admin-btn-primary" data-sc-save>Doğrulama kodunu kaydet</button>
-              <p class="admin-hint" data-sc-msg hidden></p>
-              <a class="admin-btn" href="https://search.google.com/search-console" target="_blank" rel="noopener">Search Console’u aç</a>
-              <button type="button" class="admin-btn" data-sitemap-download>Yayınlanan sitemap XML</button>
-              <p class="admin-hint">Sitemap sabit: <code>/sitemap.xml</code>. Yayınlanan SEO URL’lerini XML indirip Search Console’a gönder.</p>
+              <div class="admin-tool-row">
+                <a class="admin-tool" href="https://search.google.com/search-console" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 18 18"><path fill="#EA4335" d="M9 7.2v3.6h5.1c-.2 1.2-.9 2.2-1.9 2.9l3.1 2.4c1.8-1.7 2.8-4.1 2.8-7 0-.7-.1-1.3-.2-1.9H9z"/><path fill="#34A853" d="M4 10.7l-.7.5-2.3 1.8C2.5 15.7 5.5 18 9 18c2.4 0 4.4-.8 5.9-2.1l-3.1-2.4c-.8.6-1.9.9-2.8.9-2.2 0-4-1.5-4.7-3.5z"/><path fill="#4A90E2" d="M1 5.1C.4 6.2 0 7.5 0 9s.4 2.8 1 3.9l3-2.2c-.2-.6-.3-1.2-.3-1.7s.1-1.1.3-1.7L1 5.1z"/><path fill="#FBBC05" d="M9 3.6c1.3 0 2.5.5 3.4 1.3L15 2.3C13.4.9 11.4 0 9 0 5.5 0 2.5 2.3 1 5.1l3 2.3C5 5.1 6.8 3.6 9 3.6z"/></svg></span>
+                  Search Console
+                </a>
+                <a class="admin-tool" href="https://www.bing.com/webmasters" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#00897B" d="M5 3l4 1.4v12.9l5.6-3.2-2.7-1.3-1.7-4.3 8.8 3.1v4.5L9 21.5 5 19.3V3z"/></svg></span>
+                  Bing
+                </a>
+                <a class="admin-tool" href="https://webmaster.yandex.com/" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#FC3F1D" d="M13.3 21.5h3V2.5h-4.4C7.5 2.5 5.2 4.8 5.2 8.2c0 2.7 1.3 4.3 3.6 5.9l-4 7.4h3.3l4.4-8.3-1.5-1c-1.9-1.3-2.8-2.3-2.8-4.2 0-1.7 1.2-2.9 3.5-2.9h1.6v16.4z"/></svg></span>
+                  Yandex
+                </a>
+                <a class="admin-tool" href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwww.sanastechnology.com%2F" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 9 9" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12l4.5-4.5" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                  PageSpeed
+                </a>
+                <a class="admin-tool" href="https://tagassistant.google.com/" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="#fbbf24" stroke-width="1.6"/><path d="M7 18v2h10v-2" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                  Tag Assistant
+                </a>
+                <a class="admin-tool" href="https://analytics.google.com/analytics/web/#/p546157474/" target="_blank" rel="noopener">
+                  <span class="admin-tool-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#F9AB00" d="M15.5 3.5v17a2.5 2.5 0 0 0 5 0v-17a2.5 2.5 0 0 0-5 0Z"/><path fill="#E37400" d="M9.5 12v8.5a2.5 2.5 0 0 0 5 0V12a2.5 2.5 0 0 0-5 0Z"/><circle fill="#E37400" cx="6" cy="20.5" r="2.5"/></svg></span>
+                  GA4
+                </a>
+              </div>
+              <div class="admin-verify-grid">
+                <label class="admin-field"><span>Google meta (opsiyonel)</span>
+                  <input type="text" data-sc-verification placeholder="DNS varsa boş bırak" autocomplete="off" />
+                </label>
+                <label class="admin-field"><span>Bing meta</span>
+                  <input type="text" data-bing-verification placeholder="msvalidate.01" autocomplete="off" />
+                </label>
+                <label class="admin-field"><span>Yandex meta</span>
+                  <input type="text" data-yandex-verification placeholder="yandex-verification" autocomplete="off" />
+                </label>
+              </div>
+              <div class="admin-form-actions">
+                <button type="button" class="admin-btn admin-btn-primary" data-verification-save>Kaydet</button>
+                <button type="button" class="admin-btn" data-sitemap-download>Sitemap XML</button>
+              </div>
+              <p class="admin-hint">GA4: <code>G-HY4FN9MXS9</code> · Sitemap: <code>/sitemap.xml</code> · Detay: <code>docs/WEBMASTER.md</code></p>
             </div>
           </div>
-          <div class="admin-card admin-card-wide">
+          <div class="admin-card admin-card-wide has-ac" style="--ac:#34d399">
+            <div class="admin-card-bar" style="margin-bottom:0">
+              <h2>
+                <span class="admin-nav-ico" style="--ic:#34d399"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12.3s4.4-3.6 4.4-6.9A4.4 4.4 0 0 0 2.6 5.4c0 3.3 4.4 6.9 4.4 6.9Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+                Google İşletme Profili (NAP)
+              </h2>
+              <a class="admin-ico-link" href="https://business.google.com/" target="_blank" rel="noopener" title="Profili yönet" aria-label="Profili yönet">
+                <svg width="15" height="15" viewBox="0 0 18 18" aria-hidden="true"><path fill="#EA4335" d="M9 7.2v3.6h5.1c-.2 1.2-.9 2.2-1.9 2.9l3.1 2.4c1.8-1.7 2.8-4.1 2.8-7 0-.7-.1-1.3-.2-1.9H9z"/><path fill="#34A853" d="M4 10.7l-.7.5-2.3 1.8C2.5 15.7 5.5 18 9 18c2.4 0 4.4-.8 5.9-2.1l-3.1-2.4c-.8.6-1.9.9-2.8.9-2.2 0-4-1.5-4.7-3.5z"/><path fill="#4A90E2" d="M1 5.1C.4 6.2 0 7.5 0 9s.4 2.8 1 3.9l3-2.2c-.2-.6-.3-1.2-.3-1.7s.1-1.1.3-1.7L1 5.1z"/><path fill="#FBBC05" d="M9 3.6c1.3 0 2.5.5 3.4 1.3L15 2.3C13.4.9 11.4 0 9 0 5.5 0 2.5 2.3 1 5.1l3 2.3C5 5.1 6.8 3.6 9 3.6z"/></svg>
+              </a>
+            </div>
+            <div class="admin-stack">
+              <p class="admin-hint"><strong>Name:</strong> Sanas Technology</p>
+              <p class="admin-hint"><strong>Address:</strong> Büyükdere Mah. Karagözlü Sok. No:46, Odunpazarı / Eskişehir</p>
+              <p class="admin-hint"><strong>Phone:</strong> +90 530 013 03 26</p>
+              <p class="admin-hint"><strong>Web:</strong> https://www.sanastechnology.com</p>
+            </div>
+          </div>
+          <div class="admin-card admin-card-wide has-ac" style="--ac:#a78bfa">
             <h2>
               <span class="admin-nav-ico" style="--ic:#a78bfa"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.3" stroke="currentColor" stroke-width="1.2"/><path d="M2.8 11.5c.7-2 2.2-3 4.2-3s3.5 1 4.2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
               Google yetkililer
@@ -382,6 +538,8 @@
         </form>
       </div>
     </div>
+
+    <div class="admin-toast-wrap" data-toast-wrap aria-live="polite"></div>
 
     <div class="admin-modal" data-domain-modal hidden>
       <div class="admin-modal-backdrop" data-domain-modal-close></div>

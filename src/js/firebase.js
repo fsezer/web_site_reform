@@ -12,9 +12,15 @@ export const firebaseConfig = {
 /** GA4 property id (Analytics Admin). */
 export const GA4_PROPERTY_ID = "546157474";
 
-/** Cloud Run — GA4 Data API proxy. */
+/** Cloud Run — GA4 + Search Console Data API proxy. */
 export const GA4_REPORT_URL =
-  "https://sanas-ga4-api-614342760473.europe-west1.run.app";
+  "https://sanas-ga4-api-614342760473.europe-west1.run.app/ga4";
+
+export const SC_REPORT_URL =
+  "https://sanas-ga4-api-614342760473.europe-west1.run.app/sc";
+
+export const PSI_REPORT_URL =
+  "https://sanas-ga4-api-614342760473.europe-west1.run.app/psi";
 
 /** Cannot be removed from admin allowlist. */
 export const LOCKED_ADMIN_EMAIL = "admin@istiklalyazilim.com";

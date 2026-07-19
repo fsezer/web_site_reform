@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { clearAllowlistCache, fetchAllowlist } from "./allowlist.js";
 import { firebaseConfig } from "./firebase.js";
+import { initAdminPwa } from "./adminPwa.js";
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
@@ -104,6 +105,7 @@ async function signInWithGoogle() {
 
 const loginPage = document.body?.dataset?.page === "login";
 if (loginPage) {
+  initAdminPwa();
   waitForUser().then(async (user) => {
     if (user && (await isAllowedEmail(user.email))) redirectAfterLogin();
   });

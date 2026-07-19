@@ -1,12 +1,10 @@
 import { initI18n } from "./i18n.js";
 import { initAnalytics } from "./analytics.js";
 import { injectOrganizationSchema } from "./schema.js";
-import { injectSearchConsoleMeta } from "./siteSettings.js";
 
 initI18n();
 initAnalytics();
 injectOrganizationSchema();
-void injectSearchConsoleMeta();
 
 const body = document.body;
 const navToggle = document.querySelector("[data-nav-toggle]");
@@ -55,13 +53,13 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeNav();
 });
 
-/* Intro — centered brand title + blue wave rule (first entry per session, any page) */
+/* Intro — normal açılış hızlıdır; markalı intro yalnız ?intro=1 ile gösterilir. */
 if (intro) {
   const force = new URLSearchParams(location.search).has("intro");
-  const seen = sessionStorage.getItem("sanas-intro");
-  if (seen && !force) {
+  if (!force) {
     intro.remove();
   } else {
+    intro.classList.add("is-enabled");
     const titleWrap = intro.querySelector("[data-intro-title]");
     const typedEl = intro.querySelector("[data-intro-typed]");
     const caretEl = intro.querySelector("[data-intro-caret]");

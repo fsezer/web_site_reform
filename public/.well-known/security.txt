@@ -1,0 +1,5 @@
+Contact: mailto:info@sanastechnology.com
+Contact: mailto:destek@sanastechnology.com
+Expires: 2027-07-19T00:00:00.000Z
+Preferred-Languages: tr, en
+Canonical: https://www.sanastechnology.com/.well-known/security.txt

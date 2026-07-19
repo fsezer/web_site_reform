@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "S7F6YMNZV6.com.sanastechnology.admin",
+        "paths": ["/Admin", "/Admin/*", "/login", "/login/*"]
+      }
+    ]
+  }
+}

@@ -83,7 +83,8 @@ function syncLangSelect(lang) {
   document.querySelectorAll("[data-set-lang]").forEach((btn) => {
     const active = btn.getAttribute("data-set-lang") === lang;
     btn.classList.toggle("is-active", active);
-    btn.setAttribute("aria-selected", String(active));
+    btn.removeAttribute("aria-selected");
+    btn.setAttribute("aria-pressed", String(active));
   });
 
   root.setAttribute("aria-label", t(lang, "nav.lang"));

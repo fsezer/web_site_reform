@@ -18,9 +18,14 @@ gcloud run deploy sanas-ga4-api \
   --project=sanas-502703 \
   --allow-unauthenticated \
   --service-account=ga4-reader@sanas-502703.iam.gserviceaccount.com \
-  --set-env-vars=GA4_PROPERTY_ID=546157474 \
+  --set-env-vars=GA4_PROPERTY_ID=546157474,PSI_API_KEY=REPLACE_ME \
   --port=8080
 ```
+
+Endpoints:
+- `GET /ga4?days=7` — GA4 path views (Bearer Firebase ID token)
+- `GET /sc?days=7` — Search Console queries
+- `GET /psi?url=https://www.sanastechnology.com/&strategy=mobile` — PageSpeed (auth + server key)
 
 HTTP açık; içeride Firebase ID token + allowlist doğrulanır.
 

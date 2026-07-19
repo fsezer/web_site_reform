@@ -21,6 +21,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <meta name="theme-color" content="#0a0a0b" />
+    <meta name="yandex-verification" content="f9db4a08a0b98cb9" />
     <link rel="canonical" href="https://www.sanastechnology.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sanas Technology" />
@@ -37,10 +38,15 @@
     <meta name="twitter:image" content="https://www.sanastechnology.com/img/meta_img/sanas_meta.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preload" as="image" href="/img/bg-home.webp" type="image/webp" fetchpriority="high" />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=optional"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=optional" rel="stylesheet" /></noscript>
     <link rel="stylesheet" href="/src/css/main.css" />
     <script type="application/ld+json">
       {
@@ -70,7 +76,7 @@
     <header class="site-header" data-site-header>
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
         <div class="flex min-w-0 items-center gap-3 md:gap-4">
-          <a href="/index.html" class="brand-mark" aria-label="Sanas Technology"><img class="brand-logo-full brand-logo-on-light" src="/img/brand/logo-full-dark.png" alt="Sanas" width="822" height="264" /><img class="brand-logo-full brand-logo-on-dark" src="/img/brand/logo-full.png" alt="Sanas" width="822" height="264" /></a>
+          <a href="/index.html" class="brand-mark" aria-label="Sanas Technology"><img class="brand-logo-full brand-logo-on-light" src="/img/brand/logo-full-dark-compact.webp" alt="Sanas" width="420" height="135" /><img class="brand-logo-full brand-logo-on-dark" src="/img/brand/logo-full-compact.webp" alt="Sanas" width="420" height="135" /></a>
         </div>
         <div class="flex items-center gap-3">
           <nav class="hidden items-center gap-7 md:flex" data-i18n-aria="nav.main" aria-label="Ana menü">
@@ -128,18 +134,18 @@
 
     <main>
       <section class="relative flex items-center overflow-hidden bg-hero" data-home-hero>
-        <div class="absolute inset-0 opacity-35" style="background-image: url('/img/bg.jpg'); background-size: cover; background-position: center" aria-hidden="true"></div>
+        <img class="absolute inset-0 h-full w-full object-cover opacity-35" src="/img/bg-home.webp" alt="" width="1280" height="640" fetchpriority="high" aria-hidden="true" />
         <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,11,0.55)_0%,rgba(10,10,11,0.85)_55%,rgba(10,10,11,0.97)_100%)]" aria-hidden="true"></div>
         <div class="hero-tint" aria-hidden="true"></div>
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="relative z-10 mx-auto w-full max-w-4xl px-5 pb-12 pt-28 text-center md:pb-14 md:pt-32">
           <h1 class="sr-only" data-i18n="home.srHeadline">Sanas Technology — Kodun büyüsüyle, sonsuz çözümlere. 2004'ten beri yazılım, bulut ve yapay zekâ çözümleri.</h1>
-          <div class="relative mx-auto w-[min(58vw,21rem)] reveal">
-            <img class="hero-logo w-full" src="/img/brand/logo-full.png" alt="Sanas Technology" width="850" height="315" fetchpriority="high" decoding="async" data-hero-logo />
+          <div class="relative mx-auto w-[min(58vw,21rem)]">
+            <img class="hero-logo w-full" src="/img/brand/logo-full-hero.webp" alt="Sanas Technology" width="680" height="218" decoding="async" data-hero-logo />
             <span class="hero-est" aria-hidden="true">Est. 2004</span>
           </div>
-          <hr class="hero-hr reveal" aria-hidden="true" />
-          <div class="hero-slides mx-auto mt-7 max-w-3xl reveal" data-hero-slides>
+          <hr class="hero-hr" aria-hidden="true" />
+          <div class="hero-slides mx-auto mt-7 max-w-3xl" data-hero-slides>
             <blockquote class="hero-slide is-active" data-hue="0">
               <p class="hero-quote" data-i18n="home.quote">“&nbsp;Karanlığın içinde yol bulmak için ışığa ihtiyacın yok. Haritayı sen çizdiysen, gölgede kalmak en büyük avantajdır.&nbsp;”</p>
               <cite class="mt-5 block pr-2 text-right text-[12px] font-semibold tracking-[0.24em] text-mist uppercase not-italic">Fatih SEZER <span class="text-signal">· CTO</span></cite>
@@ -215,7 +221,7 @@
           </div>
           <div class="mt-8 grid gap-10 lg:grid-cols-2 lg:items-center">
             <figure class="img-blend weave-wrap reveal overflow-hidden rounded-[2rem]">
-              <img class="w-full object-cover" src="/img/intelligence-weave.webp" alt="Klavyeden yapay zekâ örgüsüyle koda" data-i18n-alt="home.aiImgAlt" width="1200" height="800" loading="lazy" decoding="async" />
+              <img class="w-full object-cover" src="/img/intelligence-weave-720.webp" alt="Klavyeden yapay zekâ örgüsüyle koda" data-i18n-alt="home.aiImgAlt" width="720" height="480" loading="lazy" decoding="async" />
               <div class="weave-anim" data-weave aria-hidden="true"></div>
             </figure>
             <div class="reveal">
@@ -405,7 +411,7 @@
     <footer class="site-footer-dark">
       <div class="mx-auto flex max-w-7xl flex-col items-stretch gap-8 md:flex-row md:items-center md:justify-between">
         <div class="text-center md:text-left">
-          <img class="footer-logo mx-auto md:mx-0" src="/img/brand/logo-full.png" alt="Sanas Technology" width="850" height="315" loading="lazy" decoding="async" />
+          <img class="footer-logo mx-auto md:mx-0" src="/img/brand/logo-full-compact.webp" alt="Sanas Technology" width="420" height="135" loading="lazy" decoding="async" />
           <p class="mt-4 text-sm text-mist" data-i18n="home.slogan">Kodun büyüsüyle, sonsuz çözümlere.</p>
           <hr class="footer-hr mx-auto md:mx-0" />
           <p class="mt-2 text-xs text-fog" data-i18n="common.copyright">&copy; 2004 Sanas Technology</p>
