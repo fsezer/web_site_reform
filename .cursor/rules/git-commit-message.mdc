@@ -1,0 +1,6 @@
+# Git commit / push kuralı
+
+- Kullanıcı commit mesajı için ne isim verdiyse **birebir onu kullan**.
+  Kendinden ön ek, açıklama, çeviri, süsleme EKLEME.
+- Kullanıcı isim vermediyse commit atmadan önce sor.
+- Commit/push yalnızca kullanıcı açıkça isteyince yapılır (global kuralla aynı).

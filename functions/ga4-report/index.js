@@ -94,6 +94,9 @@ async function runGa4Report(from, to) {
 
   const byDateMap = new Map();
   const byPathMap = new Map();
+  // Sabit sayfalar ↔ SEO sayfaları (/content/…) günlük kırılımı — mobil trend tab'ları
+  const byDateFixedMap = new Map();
+  const byDateSeoMap = new Map();
   for (const r of rows) {
     const d =
       r.date?.length === 8
@@ -101,15 +104,22 @@ async function runGa4Report(from, to) {
         : r.date;
     byDateMap.set(d, (byDateMap.get(d) || 0) + r.views);
     byPathMap.set(r.path, (byPathMap.get(r.path) || 0) + r.views);
+    const seg = r.path.startsWith("/content/") ? byDateSeoMap : byDateFixedMap;
+    seg.set(d, (seg.get(d) || 0) + r.views);
   }
+
+  const toSeries = (map) =>
+    [...map.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([date, total]) => ({ date, total }));
 
   return {
     propertyId: PROPERTY_ID,
     from,
     to,
-    byDate: [...byDateMap.entries()]
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([date, total]) => ({ date, total })),
+    byDate: toSeries(byDateMap),
+    byDateFixed: toSeries(byDateFixedMap),
+    byDateSeo: toSeries(byDateSeoMap),
     byPath: [...byPathMap.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 30)

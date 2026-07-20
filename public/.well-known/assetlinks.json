@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "com.sanastechnology.admin",
       "sha256_cert_fingerprints": [
-        "88:49:BB:0D:92:46:83:87:15:88:64:8B:6D:7E:F8:FE:23:7A:61:F2:49:14:96:BE:B7:F7:88:D6:BA:3D:E2:31"
+        "88:49:BB:0D:92:46:83:87:15:88:64:8B:6D:7E:F8:FE:23:7A:61:F2:49:14:96:BE:B7:F7:88:D6:BA:3D:E2:31",
+        "A7:AE:E7:BE:DF:45:39:56:4E:E1:E1:78:15:B9:23:AF:51:18:7D:55:2F:FE:34:39:7F:7B:3C:F8:2C:9E:12:53"
       ]
     }
   }

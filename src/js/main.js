@@ -53,10 +53,11 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeNav();
 });
 
-/* Intro — normal açılış hızlıdır; markalı intro yalnız ?intro=1 ile gösterilir. */
+/* Intro — oturumda ilk girişte (hangi sayfa olursa olsun) bir kez oynar; ?intro=1 ile her zaman zorlanabilir. */
 if (intro) {
   const force = new URLSearchParams(location.search).has("intro");
-  if (!force) {
+  const seen = sessionStorage.getItem("sanas-intro") === "1";
+  if (!force && seen) {
     intro.remove();
   } else {
     intro.classList.add("is-enabled");

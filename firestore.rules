@@ -37,6 +37,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    /* Mobil panel: elle girilen reklam yatırımı kayıtları. */
+    match /settings/adspend {
+      allow read, write: if isAdmin();
+    }
+
     match /notes/{id} {
       allow read, write: if isAdmin();
     }
